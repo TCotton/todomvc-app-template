@@ -1,6 +1,9 @@
-(function (window) {
+(function (window, _) {
 	'use strict';
 
 	// Your starting point. Enjoy the ride!
 
-})(window);
+	const tpl = _.template('<h1>Some text: <%= foo %></h1>');
+	tpl({foo: 'blahblah'});
+
+})(window, _);
