@@ -1,0 +1,50 @@
+<template id="footer-template">
+
+  <footer class="footer">
+    <!-- This should be `0 items left` by default -->
+    <span class="todo-count"><strong>0</strong> item left</span>
+    <!-- Remove this if you don't implement routing -->
+    <ul class="filters">
+      <li>
+        <a class="selected" href="#/">All</a>
+      </li>
+      <li>
+        <a href="#/active">Active</a>
+      </li>
+      <li>
+        <a href="#/completed">Completed</a>
+      </li>
+    </ul>
+    <!-- Hidden if no completed items are left ↓ -->
+    <button class="clear-completed">Clear completed</button>
+  </footer>
+
+</template>
+
+<script>
+
+  (function (doc, win) {
+
+    const docU = (doc._currentScript || doc.currentScript).ownerDocument;
+    const template = docU.querySelector('#footer-template');
+
+    class FooterComponent extends HTMLElement {
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+
+        const temp = docU.importNode(template.content, true);
+        this.appendChild(temp);
+
+      }
+
+    }
+
+    win.customElements.define('footer-component', FooterComponent);
+
+  })(document, window);
+
+</script>

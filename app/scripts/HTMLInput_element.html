@@ -1,0 +1,56 @@
+<template id="HTMLInputElement_comp-template">
+
+  <input />
+
+</template>
+
+<script>
+
+  (function (doc, win) {
+
+    const docU = (doc._currentScript || doc.currentScript).ownerDocument;
+    const template = docU.querySelector('#HTMLInputElement_comp-template');
+
+    console.dir(template);
+
+    class MainComponent extends HTMLInputElement {
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+
+        const temp = docU.importNode(template.content, true);
+        this.appendChild(temp);
+
+      }
+
+      static get observedAttributes() {
+        return ['type'];
+      }
+
+      attributeChangedCallback(attrName, oldVal, newVal) {
+        this[attrName] = newVal;
+      }
+
+      // synchronise attribute and properties
+
+      set type(value) {
+        if (Object.is(this._type, value)) {
+          return;
+        }
+        this._type = value;
+      }
+
+      get type() {
+        return this._type;
+      }
+
+    }
+
+    win.customElements.define('htmlinput-element', MainComponent);
+
+  })(document, window);
+
+</script>
