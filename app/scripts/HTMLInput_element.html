@@ -1,19 +1,8 @@
-<template id="HTMLInputElement_comp-template">
-
-  <input />
-
-</template>
-
 <script>
 
   (function (doc, win) {
 
-    const docU = (doc._currentScript || doc.currentScript).ownerDocument;
-    const template = docU.querySelector('#HTMLInputElement_comp-template');
-
-    console.dir(template);
-
-    class MainComponent extends HTMLInputElement {
+    class HTMLInput extends HTMLElement {
 
       constructor() {
         super();
@@ -21,8 +10,8 @@
 
       connectedCallback() {
 
-        const temp = docU.importNode(template.content, true);
-        this.appendChild(temp);
+        let input = doc.createElement('INPUT');
+        this.appendChild(input);
 
       }
 
@@ -31,6 +20,7 @@
       }
 
       attributeChangedCallback(attrName, oldVal, newVal) {
+        console.dir(newVal);
         this[attrName] = newVal;
       }
 
@@ -41,6 +31,7 @@
           return;
         }
         this._type = value;
+        console.dir(this);
       }
 
       get type() {
@@ -49,7 +40,7 @@
 
     }
 
-    win.customElements.define('htmlinput-element', MainComponent);
+    win.customElements.define('html-input', HTMLInput, { extends: 'checkbox' });
 
   })(document, window);
 
