@@ -1,8 +1,9 @@
-(function () {
+window.onload = () => {
 
-	const toDo = {};
-	toDo.ENTER_KEY = 13;
+  window.toDo = {};
+  toDo.ENTER_KEY = 13;
 
-	Object.freeze(toDo);
+  Object.freeze(toDo);
 
-}());
+};
+

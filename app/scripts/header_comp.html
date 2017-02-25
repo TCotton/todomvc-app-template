@@ -1,37 +1,45 @@
 <template id="header-template">
-	<header class="header">
-		<h1>todos</h1>
-		<label for="newTodo" class="visuallyhidden">What needs to be done?</label>
-		<input class="new-todo" id="newTodo" placeholder="What needs to be done?" value="" autofocus />
-	</header>
+  <header class="header">
+    <h1>todos</h1>
+    <label for="newTodo" class="visuallyhidden">What needs to be done?</label>
+    <input class="new-todo" id="newTodo" placeholder="What needs to be done?" value="" autofocus/>
+  </header>
 </template>
 
 <script>
 
-	(function (document, window) {
+  (function (document, window) {
 
-		const docU = (document._currentScript || document.currentScript).ownerDocument;
-		const template = docU.querySelector('#header-template');
+    const docU = (document._currentScript || document.currentScript).ownerDocument;
+    const template = docU.querySelector('#header-template');
 
-		class HeaderComponent extends HTMLElement {
+    class HeaderComponent extends HTMLElement {
 
-			constructor () {
-				super();
-			}
+      constructor() {
+        super();
+      }
 
-			connectedCallback () {
+      connectedCallback() {
 
-				const temp = docU.importNode(template.content, true);
-				this.appendChild(temp);
+        const temp = docU.importNode(template.content, true);
+        this.appendChild(temp);
 
         const newTodo = this.querySelector('#newTodo');
+        newTodo.addEventListener('keydown', this.addKeyDownEvent, false);
 
-			}
+      }
 
-		}
+      addKeyDownEvent(event) {
 
-		window.customElements.define('header-component', HeaderComponent);
+        if (Object.is(event.keyCode, window.toDo.ENTER_KEY)) {
+          console.dir(event.keyCode);
+        }
+      }
 
-	})(document, window);
+    }
+
+    window.customElements.define('header-component', HeaderComponent);
+
+  })(document, window);
 
 </script>
