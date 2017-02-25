@@ -1,60 +1,60 @@
 <template id="view-template">
 
-  <li data-id="<%- rc.key %>">
+	<li data-id="<%= rc.key %>">
     <span class="view">
       <input class="toggle" type="checkbox" id="view-toggle">
-      <label for="view-toggle">Taste JavaScript</label>
+      <label for="view-toggle"><%- rc.title %></label>
       <button is="extend-button" class="destroy"></button>
     </span>
-  </li>
+	</li>
 
 </template>
 
 <script>
-  /**
-   *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-   *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
-   */
-  (function (document, window, _) {
+	/**
+	 *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
+	 *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
+	 */
+	(function (document, window, _) {
 
-    const docU = (document._currentScript || document.currentScript).ownerDocument;
-    const template = docU.querySelector('#view-template');
+		const docU = (document._currentScript || document.currentScript).ownerDocument;
+		const template = docU.querySelector('#view-template');
 
-    class ViewComponent extends HTMLElement {
+		class ViewComponent extends HTMLElement {
 
-      constructor(key, title, completed) {
-        super();
-        this._key = key;
-        this._title = title;
-        this._complete = completed;
-        this.buildTemplate(this._key);
-        console.log(_);
-      }
+			constructor (key, title, completed) {
+				super();
+				this._key = key;
+				this._title = title;
+				this._complete = completed;
+				this.buildTemplate = this.buildTemplate.bind(this);
+			}
 
-      connectedCallback() {
+			connectedCallback () {
 
-        const temp = docU.importNode(template.content, true);
-        this.appendChild(temp);
+				const temp = docU.importNode(template.content, true);
+				this.appendChild(temp);
+				this.innerHTML = this.buildTemplate(this.innerHTML);
 
-      }
+			}
 
-      buildTemplate(key) {
+			buildTemplate (content) {
 
-        _.templateSettings.variable = 'rc';
+				_.templateSettings.variable = 'rc';
 
-        // Grab the HTML out of our template tag and pre-compile it.
-        const template = _.template(this.innerHTML);
+				// Grab the HTML out of our template tag and pre-compile it.
+				const template =  _.template(content, {key: this._key.toString(), title: this._title, checked: !!this._complete});
+				console.dir(template);
+				return template;
 
-        console.dir(template(key));
+			}
 
-      }
+		}
 
-    }
+		window.ViewComponent = ViewComponent;
 
-    window.ViewComponent = ViewComponent;
+		window.customElements.define('view-component', ViewComponent);
 
-    window.customElements.define('view-component', ViewComponent);
-
-  })(document, window, _);
+	})(document, window, _);
 
 </script>
