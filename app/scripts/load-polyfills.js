@@ -4,7 +4,7 @@
 		return !!document.head.attachShadow;
 	});
 
-	Modernizr.addTest('customElements', function () {
+	Modernizr.addTest('customelements', function () {
 		return !!window.customElements;
 	});
 
@@ -12,6 +12,7 @@
 		return new Promise(function(resolve, reject) {
 			const script = document.createElement('script');
 			script.async = true;
+      script.rel = 'preload';
 			script.src = src;
 			script.onload = resolve;
 			script.onerror = reject;
@@ -28,7 +29,7 @@
 			});
 	}
 
-	if (!Modernizr.customElements) {
+	if (!Modernizr.customelements) {
 		loadScript('//cdnjs.cloudflare.com/ajax/libs/document-register-element/1.1.1/document-register-element.js')
 			.then(() => {
 				return true;

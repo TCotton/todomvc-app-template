@@ -110,7 +110,14 @@ gulp.task('scripts', () =>
     // Note: Since we are not using useref in the scripts build pipeline,
     //       you need to explicitly list your scripts here in the right order
     //       to be correctly concatenated
-    './app/scripts/main.js'
+    './scripts/libraries/modernizr.js',
+    './scripts/libraries/director.js',
+    './scripts/load-polyfills.js',
+    './scripts/base.js',
+    './scripts/router.js',
+    './scripts/mediator.js',
+    './scripts/store.js',
+    './scripts/app.js'
     // Other scripts
   ])
     .pipe($.newer('.tmp/scripts'))
