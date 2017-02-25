@@ -6,4 +6,3 @@ window.onload = () => {
   Object.freeze(toDo);
 
 };
-

@@ -3,6 +3,7 @@
 // Version 1.2.6
 //
 
+/* jshint ignore:start */
 (function (exports) {
 
 	/*
@@ -718,6 +719,5 @@
 		}
 	};
 
-
-
 }(typeof exports === "object" ? exports : window));
+/* jshint ignore:end */

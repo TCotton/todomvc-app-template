@@ -1,5 +1,24 @@
+<template id="view-template">
+
+  <li data-id="1488023654891">
+    <span class="view">
+      <input class="toggle" type="checkbox" id="view-toggle">
+      <label for="view-toggle">Taste JavaScript</label>
+      <button is="extend-button" class="destroy"></button>
+    </span>
+  </li>
+
+</template>
+
 <script>
+  /**
+   *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
+    *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
+   */
   (function (document, window) {
+
+    const docU = (document._currentScript || document.currentScript).ownerDocument;
+    const template = docU.querySelector('#view-template');
 
     class ViewComponent extends HTMLElement {
 
@@ -9,18 +28,8 @@
 
       connectedCallback () {
 
-        /* let shadowRoot = this.attachShadow({mode: 'open'});
-         console.dir(shadowRoot);
-         shadowRoot.innerHTML = `
-         <style>
-         .clear-completed {
-         background: black
-         }
-         </style>`;*/
-
-        this.addEventListener('click', () => {
-          alert('YES!!!!');
-        });
+        const temp = docU.importNode(template.content, true);
+        this.appendChild(temp);
 
       }
 

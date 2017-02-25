@@ -22,6 +22,7 @@
  * of control over the experience.
  */
 
+/* jshint ignore:start */
 ;(function(window, document, undefined){
 	var classes = [];
 
@@ -1559,3 +1560,4 @@
 	;
 
 })(window, document);
+/* jshint ignore:end */
