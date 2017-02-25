@@ -29,13 +29,6 @@
 			});
 	}
 
-	if (!Modernizr.customelements) {
-		loadScript('//cdnjs.cloudflare.com/ajax/libs/document-register-element/1.1.1/document-register-element.js')
-			.then(() => {
-				return true;
-			});
-	}
-
 	if (!Modernizr.htmlimports) {
 		loadScript('https://e2a932ff6bd7e6ab5050-36c27361a8fd0c41e6433f2373919198.ssl.cf3.rackcdn.com/html_imports.js')
 			.then(() => {

@@ -1,0 +1,22 @@
+<script>
+  (function (document, window) {
+
+    class FancyButton extends HTMLButtonElement {
+
+      constructor () {
+        super(...arguments);
+      }
+
+      connectedCallback () {
+        this.addEventListener('click', () => {
+          alert('YES!!!!');
+        });
+
+      }
+
+    }
+
+    window.customElements.define('fancy-button', FancyButton, { extends: 'button' });
+
+  })(document, window);
+</script>
