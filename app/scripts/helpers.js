@@ -1,8 +1,8 @@
-(function (window) {
+window.onload = () => {
 
   window.helpers = {};
 
-  helpers.createNode = html => new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+  window.helpers.createNode = html => new DOMParser().parseFromString(html, 'text/html').body.firstChild;
 
   /**
    * Encode less-than and ampersand characters with entity codes to make user-
@@ -12,8 +12,8 @@
    *
    * @returns {string} String with unsafe characters escaped with entity codes
    */
-  helpers.escapeForHTML = s => s.replace(/[&<]/g, c => c === '&' ? '&amp;' : '&lt;');
+  window.helpers.escapeForHTML = s => s.replace(/[&<]/g, c => c === '&' ? '&amp;' : '&lt;');
 
-  Object.freeze(helpers);
+  Object.freeze(window.helpers);
 
-})(window);
+};

@@ -8,7 +8,7 @@
 
 <script>
 
-  (function (document, window) {
+  (function (document, window, mediator, store) {
 
     const docU = (document._currentScript || document.currentScript).ownerDocument;
     const template = docU.querySelector('#header-template');
@@ -24,22 +24,29 @@
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
 
-        const newTodo = this.querySelector('#newTodo');
-        newTodo.addEventListener('keydown', this.addKeyDownEvent, false);
+        this.addEvents();
 
       }
 
-      addKeyDownEvent(event) {
+      addEvents() {
 
-        if (Object.is(event.keyCode, window.toDo.ENTER_KEY)) {
-          console.dir(event.keyCode);
+        const newTodo = this.querySelector('#newTodo');
+        newTodo.addEventListener('keydown', this.keyDownEvent, false);
+
+      }
+
+      keyDownEvent(event) {
+
+        if (Object.is(event.keyCode, window.toDo.ENTER_KEY) && !Object.is(event.target.value.length, 0)) {
+          store.add(event.target.value.trim());
         }
+
       }
 
     }
 
     window.customElements.define('header-component', HeaderComponent);
 
-  })(document, window);
+  })(document, window, mediator, store);
 
 </script>

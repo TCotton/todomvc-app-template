@@ -1,4 +1,4 @@
-(((window, mediator) => {
+const store = (((window, mediator) => {
 
   const mapToJson = (map) => {
     return JSON.stringify([...map]);
@@ -34,7 +34,7 @@
 
     mediator.todosData = jsonToMap(localStorage.getItem('todo')) || new Map();
 
-    mediator.subscribe('todos', function ({ id, title, completed = false, clear }) {
+    mediator.subscribe('todos', function ({ id, title, completed = false, clear = false }) {
 
       if (clear) {
         mediator.todosData.clear();
@@ -50,23 +50,33 @@
         console.log('break');
 
       }
+
     });
 
   }());
 
   /**
-   * add:
-   * remove
-   * insert
-   * update
+   *
+   * @param title {string}
    */
 
-  (function updateName() {
+  const add = (title) => {
+    mediator.publish('todos', { id: Date.now(), title, completed: true });
+    console.log('add');
+  };
 
-    // Publish/Broadcast the 'nameChange' event with the new data
-    mediator.publish('todos', { id: Date.now(), title: 'jdoe', completed: true });
-    mediator.publish('todos', { id: Date.now(), title: 'janeDoe', completed: false });
+  const remove = () => {
+    console.log('remove');
+  };
 
-  }());
+  const update = () => {
+    console.log('update');
+  };
+
+  return {
+    add,
+    remove,
+    update
+  };
 
 })(window, mediator));
