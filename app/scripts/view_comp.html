@@ -1,6 +1,6 @@
 <template id="view-template">
 
-  <li data-id="1488023654891">
+  <li data-id="<%- rc.key %>">
     <span class="view">
       <input class="toggle" type="checkbox" id="view-toggle">
       <label for="view-toggle">Taste JavaScript</label>
@@ -13,28 +13,48 @@
 <script>
   /**
    *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-    *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
+   *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
    */
-  (function (document, window) {
+  (function (document, window, _) {
 
     const docU = (document._currentScript || document.currentScript).ownerDocument;
     const template = docU.querySelector('#view-template');
 
     class ViewComponent extends HTMLElement {
 
-      constructor () {
+      constructor(key, title, completed) {
         super();
+        this._key = key;
+        this._title = title;
+        this._complete = completed;
+        this.buildTemplate(this._key);
+        console.log(_);
       }
 
-      connectedCallback () {
+      connectedCallback() {
 
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
 
       }
 
+      buildTemplate(key) {
+
+        _.templateSettings.variable = 'rc';
+
+        // Grab the HTML out of our template tag and pre-compile it.
+        const template = _.template(this.innerHTML);
+
+        console.dir(template(key));
+
+      }
+
     }
+
+    window.ViewComponent = ViewComponent;
 
     window.customElements.define('view-component', ViewComponent);
 
-  })(document, window);
+  })(document, window, _);
+
+</script>

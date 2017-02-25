@@ -1,4 +1,5 @@
 <link rel="import" href="HTMLButton_element.html"/>
+<link rel="import" href="view_comp.html"/>
 
 <template id="main-template">
 
@@ -6,39 +7,7 @@
     <input class="toggle-all" type="checkbox" id="toggle-all">
     <label for="toggle-all">Mark all as complete</label>
 
-    <ul class="todo-list">
-      <!-- These are here just to show the structure of the list items -->
-      <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-
-      <li class="completed">
-        <div class="view">
-          <input class="toggle" type="checkbox" id="view-toggle" checked>
-          <label for="view-toggle">Taste JavaScript</label>
-          <button is="extend-button" class="destroy"></button>
-        </div>
-        <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-        <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
-      </li>
-
-      <li>
-        <div class="view">
-          <input class="toggle" type="checkbox">
-          <label>Drag a queen</label>
-          <button class="destroy"></button>
-        </div>
-        <input class="edit" value="Rule the web">
-      </li>
-
-      <li class="editing">
-        <div class="view">
-          <input class="toggle" type="checkbox">
-          <label>Buy a unicorn</label>
-          <button class="destroy"></button>
-        </div>
-        <input class="edit" value="Rule the web">
-      </li>
-
-    </ul>
+    <ul class="todo-list"></ul>
 
   </section>
 
@@ -46,7 +15,7 @@
 
 <script>
 
-  (function (document, window) {
+  (function (document, window, mediator, ViewComponent) {
 
     const docU = (document._currentScript || document.currentScript).ownerDocument;
     const template = docU.querySelector('#main-template');
@@ -62,12 +31,34 @@
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
 
+        this.insertListItems();
+
+      }
+
+      insertListItems() {
+
+        let docfrag = document.createDocumentFragment();
+
+        for (let [key, value] of mediator.todosData.entries()) {
+
+          let listBlock = new ViewComponent(key, value.title, value.completed);
+          docfrag.appendChild(listBlock);
+/*
+          console.log(key);
+          console.log(value.title);
+          console.log(value.completed);
+          console.log('break');*/
+
+        }
+
+        document.querySelector('.todo-list').appendChild(docfrag);
+
       }
 
     }
 
     window.customElements.define('main-component', MainComponent);
 
-  })(document, window);
+  })(document, window, mediator, ViewComponent);
 
 </script>

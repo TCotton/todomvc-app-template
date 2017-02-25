@@ -42,15 +42,6 @@ const store = (((window, mediator) => {
 
       mediator.todosData.set(id, { title, completed });
 
-      for (let [key, value] of mediator.todosData.entries()) {
-
-        console.log(key);
-        console.log(value.title);
-        console.log(value.completed);
-        console.log('break');
-
-      }
-
     });
 
   }());
