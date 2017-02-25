@@ -1,7 +1,8 @@
 <template id="header-template">
 	<header class="header">
 		<h1>todos</h1>
-		<input class="new-todo" placeholder="What needs to be done?" autofocus>
+		<label for="newTodo" class="visuallyhidden">What needs to be done?</label>
+		<input class="new-todo" id="newTodo" placeholder="What needs to be done?" value="" autofocus />
 	</header>
 </template>
 
@@ -22,6 +23,8 @@
 
 				const temp = docU.importNode(template.content, true);
 				this.appendChild(temp);
+
+        const newTodo = this.querySelector('#newTodo');
 
 			}
 

@@ -1,56 +1,72 @@
-(function (mediator) {
+(((window, mediator) => {
 
-	(function initialize () {
+  const mapToJson = (map) => {
+    return JSON.stringify([...map]);
+  };
 
-		mediator.todosData = new Map();
+  const jsonToMap = (jsonStr) => {
+    return new Map(JSON.parse(jsonStr));
+  };
 
-		mediator.subscribe('todos', function ({id, title, completed = false, clear}) {
+  (function setLocalStorageDefault() {
 
-			if (clear) {
-				mediator.todosData.clear();
-			}
+    /**
+     * @type {Storage}
+     */
+    const localStorage = window.localStorage;
 
-			mediator.todosData.set(id, {title, completed});
-			/*
-			 for (let [key, value] of mediator.todosData.entries()) {
+    if (!localStorage.getItem('todo')) {
 
-			 console.log(key);
-			 console.log(value.title);
-			 console.log(value.completed);
-			 console.log('break');
+      const todosData = new Map();
+      const dummyData = { id: Date.now(), title: 'Bake a JavaScript cake', completed: false };
+      todosData.set(dummyData.id, { title, completed } = dummyData);
+      localStorage.setItem('todo', mapToJson(todosData));
 
-			 }*/
-		});
+    }
 
-		/*	mediator.redosData = new Map();
+  }());
 
-		 mediator.subscribe('redos', function ({id, title, clear}) {
+  /**
+   *
+   */
 
-		 if (clear) {
-		 mediator.redosData.clear();
-		 }
+  (function initialize() {
 
-		 mediator.redosData.set(id, {title});
+    mediator.todosData = jsonToMap(localStorage.getItem('todo')) || new Map();
 
-		 for (let [key, value] of mediator.redosData.entries()) {
+    mediator.subscribe('todos', function ({ id, title, completed = false, clear }) {
 
-		 console.log(key);
-		 console.log(value.title);
-		 console.log('break');
+      if (clear) {
+        mediator.todosData.clear();
+      }
 
-		 }
-		 });*/
+      mediator.todosData.set(id, { title, completed });
 
-	}());
+      for (let [key, value] of mediator.todosData.entries()) {
 
-	/*	(function updateName () {
+        console.log(key);
+        console.log(value.title);
+        console.log(value.completed);
+        console.log('break');
 
-	 // Publish/Broadcast the 'nameChange' event with the new data
-	 mediator.publish('todos', {id: 43, title: 'jdoe', completed: true}); // tim, david
-	 mediator.publish('todos', {id: 47, title: 'janeDoe', completed: false}); // tim, david
+      }
+    });
 
-	 mediator.publish('redos', {id: 43, title: 'jdoe'}); // tim, david
-	 mediator.publish('redos', {id: 47, title: 'janeDoe'}); // tim, david
-	 }());*/
+  }());
 
-})(mediator);
+  /**
+   * add:
+   * remove
+   * insert
+   * update
+   */
+
+  (function updateName() {
+
+    // Publish/Broadcast the 'nameChange' event with the new data
+    mediator.publish('todos', { id: Date.now(), title: 'jdoe', completed: true });
+    mediator.publish('todos', { id: Date.now(), title: 'janeDoe', completed: false });
+
+  }());
+
+})(window, mediator));
