@@ -1,34 +1,34 @@
 <template id="header-template">
-  <header class="header">
-    <h1>todos</h1>
-    <input class="new-todo" placeholder="What needs to be done?" autofocus>
-  </header>
+	<header class="header">
+		<h1>todos</h1>
+		<input class="new-todo" placeholder="What needs to be done?" autofocus>
+	</header>
 </template>
 
 <script>
 
-  (function (doc, win) {
+	(function (document, window) {
 
-    const docU = (doc._currentScript || doc.currentScript).ownerDocument;
-    const template = docU.querySelector('#header-template');
+		const docU = (document._currentScript || document.currentScript).ownerDocument;
+		const template = docU.querySelector('#header-template');
 
-    class HeaderComponent extends HTMLElement {
+		class HeaderComponent extends HTMLElement {
 
-      constructor() {
-        super();
-      }
+			constructor () {
+				super();
+			}
 
-      connectedCallback() {
+			connectedCallback () {
 
-        const temp = docU.importNode(template.content, true);
-        this.appendChild(temp);
+				const temp = docU.importNode(template.content, true);
+				this.appendChild(temp);
 
-      }
+			}
 
-    }
+		}
 
-    win.customElements.define('header-component', HeaderComponent);
+		window.customElements.define('header-component', HeaderComponent);
 
-  })(document, window);
+	})(document, window);
 
 </script>
