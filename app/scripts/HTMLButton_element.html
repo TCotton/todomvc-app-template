@@ -1,13 +1,23 @@
 <script>
   (function (document, window) {
 
-    class FancyButton extends HTMLButtonElement {
+    class ExtendButton extends HTMLButtonElement {
 
       constructor () {
         super(...arguments);
       }
 
       connectedCallback () {
+
+       /* let shadowRoot = this.attachShadow({mode: 'open'});
+        console.dir(shadowRoot);
+        shadowRoot.innerHTML = `
+        <style>
+         .clear-completed {
+          background: black
+        }
+        </style>`;*/
+
         this.addEventListener('click', () => {
           alert('YES!!!!');
         });
@@ -16,7 +26,7 @@
 
     }
 
-    window.customElements.define('fancy-button', FancyButton, { extends: 'button' });
+    window.customElements.define('extend-button', ExtendButton, { extends: 'button' });
 
   })(document, window);
 </script>

@@ -1,0 +1,31 @@
+<script>
+  (function (document, window) {
+
+    class ViewComponent extends HTMLElement {
+
+      constructor () {
+        super();
+      }
+
+      connectedCallback () {
+
+        /* let shadowRoot = this.attachShadow({mode: 'open'});
+         console.dir(shadowRoot);
+         shadowRoot.innerHTML = `
+         <style>
+         .clear-completed {
+         background: black
+         }
+         </style>`;*/
+
+        this.addEventListener('click', () => {
+          alert('YES!!!!');
+        });
+
+      }
+
+    }
+
+    window.customElements.define('view-component', ViewComponent);
+
+  })(document, window);
