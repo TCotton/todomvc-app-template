@@ -35,7 +35,7 @@
 			});
 	}
 
-	if (!Modernizr.htmlimport) {
+	if (!Modernizr.htmlimports) {
 		loadScript('https://e2a932ff6bd7e6ab5050-36c27361a8fd0c41e6433f2373919198.ssl.cf3.rackcdn.com/html_imports.js')
 			.then(() => {
 				return true;

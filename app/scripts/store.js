@@ -1,7 +1,5 @@
 (function (mediator) {
 
-	console.dir(this);
-
 	(function initialize () {
 
 		mediator.todosData = new Map();
