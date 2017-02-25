@@ -1,0 +1,19 @@
+<script>
+
+	(function (doc, win) {
+
+		function mandatory (param) {
+			throw new Error(`Missing parameter ${param}`);
+		}
+
+		win.customElements.define('default-attr', class extends HTMLImageElement {
+			// Give img default size if users don't specify.
+			constructor (width = mandatory('width'), height = mandatory('height')) {
+				console.dir(this);
+				super(width * 10, height * 10);
+			}
+		}, {extends: 'img'});
+
+	})(document, window);
+
+</script>

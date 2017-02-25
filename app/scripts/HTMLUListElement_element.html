@@ -2,17 +2,15 @@
 
 	(function (doc, win) {
 
-		class HTMLInput extends HTMLTextAreaElement {
+		class HTML_UL extends HTMLElement {
 
-			constructor (placeholder = 'Some text here') {
-			  console.dir(arguments);
-				super(placeholder);
+			constructor () {
+				super();
 			}
 
 			connectedCallback () {
 
-				let input = doc.createElement('INPUT');
-				this.appendChild(input);
+				this.innerHTML = `<ul></ul>`;
 
 			}
 
@@ -21,6 +19,7 @@
 			}
 
 			attributeChangedCallback (attrName, oldVal, newVal) {
+				console.dir(attrName);
 				console.dir(newVal);
 				this[attrName] = newVal;
 			}
@@ -41,7 +40,7 @@
 
 		}
 
-		win.customElements.define('html-input', HTMLInput, {extends: 'input'});
+		win.customElements.define('html-ul', HTML_UL);
 
 	})(document, window);
 

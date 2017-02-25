@@ -2,17 +2,16 @@
 
 	(function (doc, win) {
 
-		class HTMLInput extends HTMLTextAreaElement {
+		class HTML_LI extends HTMLElement {
 
-			constructor (placeholder = 'Some text here') {
-			  console.dir(arguments);
-				super(placeholder);
+			constructor () {
+				super();
 			}
 
 			connectedCallback () {
 
-				let input = doc.createElement('INPUT');
-				this.appendChild(input);
+				let listItem = doc.createElement('li');
+				this.appendChild(listItem);
 
 			}
 
@@ -21,6 +20,7 @@
 			}
 
 			attributeChangedCallback (attrName, oldVal, newVal) {
+				console.dir(attrName);
 				console.dir(newVal);
 				this[attrName] = newVal;
 			}
@@ -41,7 +41,7 @@
 
 		}
 
-		win.customElements.define('html-input', HTMLInput, {extends: 'input'});
+		win.customElements.define('html-li', HTML_LI);
 
 	})(document, window);
 
