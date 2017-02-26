@@ -53,8 +53,16 @@ const store = (((window, mediator) => {
    */
 
   const add = (title) => {
-    mediator.publish('todos', { id: Date.now(), title, completed: true });
-    console.log('add');
+
+    return new Promise(function (resolve) {
+
+      // is rejection needed on a to add promise?
+      // what will be rejected?
+      mediator.publish('todos', { id: Date.now(), title, completed: false });
+
+      resolve(true);
+
+    });
   };
 
   const remove = () => {
