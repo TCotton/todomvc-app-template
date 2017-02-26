@@ -1,60 +1,62 @@
 <template id="view-template">
 
-	<li data-id="<%= rc.key %>">
+  <li>
     <span class="view">
-      <input class="toggle" type="checkbox" id="view-toggle">
-      <label for="view-toggle"><%- rc.title %></label>
+      <input class="toggle" type="checkbox" id="view-toggle" />
+      <label for="view-toggle">here</label>
       <button is="extend-button" class="destroy"></button>
     </span>
-	</li>
+  </li>
 
 </template>
 
 <script>
-	/**
-	 *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-	 *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
-	 */
-	(function (document, window, _) {
+  /**
+   *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
+   *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
+   */
+  (function (document, window) {
 
-		const docU = (document._currentScript || document.currentScript).ownerDocument;
-		const template = docU.querySelector('#view-template');
+    const docU = (document._currentScript || document.currentScript).ownerDocument;
+    const template = docU.querySelector('#view-template');
 
-		class ViewComponent extends HTMLElement {
+    class ViewComponent extends HTMLElement {
 
-			constructor (key, title, completed) {
-				super();
-				this._key = key;
-				this._title = title;
-				this._complete = completed;
-				this.buildTemplate = this.buildTemplate.bind(this);
-			}
+      constructor(key, title, completed) {
+        super();
+        this._key = key;
+        this._title = title;
+        this._complete = completed;
+      }
 
-			connectedCallback () {
+      connectedCallback() {
 
-				const temp = docU.importNode(template.content, true);
-				this.appendChild(temp);
-				this.innerHTML = this.buildTemplate(this.innerHTML);
+        const temp = docU.importNode(this.buildNode(template.content), true);
+        this.appendChild(temp);
 
-			}
+      }
 
-			buildTemplate (content) {
+      buildNode(content) {
 
-				_.templateSettings.variable = 'rc';
+        content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
+        content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
+        content.querySelector('li').dataset.id = this._key;
+        content.querySelector('label').textContent = this._title;
 
-				// Grab the HTML out of our template tag and pre-compile it.
-				const template =  _.template(content, {key: this._key.toString(), title: this._title, checked: !!this._complete});
-				console.dir(template);
-				return template;
+        if(!!this._complete) {
+          content.querySelector('input').setAttribute('checked', 'checked');
+        }
 
-			}
+        return content;
 
-		}
+      }
 
-		window.ViewComponent = ViewComponent;
+    }
 
-		window.customElements.define('view-component', ViewComponent);
+    window.ViewComponent = ViewComponent;
 
-	})(document, window, _);
+    window.customElements.define('view-component', ViewComponent);
+
+  })(document, window, Helpers);
 
 </script>

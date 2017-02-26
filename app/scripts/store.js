@@ -1,3 +1,4 @@
+
 const store = (((window, mediator) => {
 
   const mapToJson = (map) => {
