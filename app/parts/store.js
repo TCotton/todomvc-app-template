@@ -11,6 +11,11 @@ class Store {
 
     if (!localStorage.getItem('todo')) {
 
+      /**
+       * set localStorage session for first user
+       * @type {Map}
+       */
+
       const todosData = new Map();
       const dummyData = { id: Date.now(), title: 'Bake a JavaScript cake', completed: false };
       todosData.set(dummyData.id, { title, completed } = dummyData);
@@ -35,19 +40,25 @@ class Store {
     }.bind(this));
 
     this.update();
+    this.add();
 
   }
+
+  /**
+   * @description niavly sets data as a string on the main component which is acted upon in the observer
+   * @param data {Map}
+   */
 
   dataFlow(data) {
     const mainComp = document.querySelector('main-component');
     mainComp.setAttribute('listblock', APP.Helpers.mapToJson(data));
   }
 
-  add(title) {
+  add() {
 
-    // is rejection needed on a to add promise?
-    // what will be rejected?
-    this.mediator.publish('todos', { id: Date.now(), title, completed: false });
+    document.body.addEventListener('add', function (event) {
+      this.mediator.publish('todos', { id: Date.now(), title: event.detail.title, completed: false });
+    }.bind(this));
 
   }
 
@@ -56,6 +67,7 @@ class Store {
   }
 
   update() {
+
     document.body.addEventListener('update', function (event) {
 
       console.log(this.mediator.todosData.size);

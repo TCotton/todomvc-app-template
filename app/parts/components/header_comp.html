@@ -23,22 +23,29 @@
 
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
-
         this.addEvents();
 
       }
 
+      disconnectedCallback() {
+        this.querySelector('#newTodo').removeEventListener('keydown', this.keyDownEvent);
+      }
+
       addEvents() {
-
-        const newTodo = this.querySelector('#newTodo');
-        newTodo.addEventListener('keydown', this.keyDownEvent, false);
-
+        this.querySelector('#newTodo').addEventListener('keydown', this.keyDownEvent, false);
       }
 
       keyDownEvent(event) {
 
         if (Object.is(event.keyCode, APP.CONSTS.ENTER_KEY) && !Object.is(event.target.value.length, 0)) {
-          APP.Store.add(event.target.value.trim());
+
+          const evt = new CustomEvent('add', {
+            detail: { title: event.target.value.trim() }, bubbles: true
+          });
+
+          this.dispatchEvent(evt);
+
+          event.target.value = '';
         }
 
       }
