@@ -34,6 +34,8 @@ class Store {
 
     }.bind(this));
 
+    this.update();
+
   }
 
   dataFlow(data) {
@@ -54,7 +56,17 @@ class Store {
   }
 
   update() {
-    console.log('update');
+    document.body.addEventListener('update', function (event) {
+
+      console.log(this.mediator.todosData.size);
+
+      const todoItem = this.mediator.todosData.get(event.detail.id);
+      this.mediator.todosData.set(todoItem.id, {id: todoItem.id, title: todoItem.title, completed: event.detail.completed});
+
+      console.log(this.mediator.todosData.size);
+
+    }.bind(this), false);
+
   }
 
 }

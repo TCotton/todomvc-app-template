@@ -37,33 +37,16 @@
 
       }
 
-      insertListItems() {
-
-        let docfrag = document.createDocumentFragment();
-
-        for (let [key, value] of this.listblock.entries()) {
-
-          let listBlock = new ViewComponent(key, value.title, value.completed);
-          docfrag.appendChild(listBlock);
-
-        }
-
-        document.querySelector('.todo-list').appendChild(docfrag);
-
-      }
-
       attributeChangedCallback(attrName, oldValue, newValue) {
 
-        if(Object.is(oldValue, newValue) || Object.is(oldValue, null)) {
+        if (Object.is(oldValue, newValue) || Object.is(oldValue, null)) {
           return;
         }
 
-        if(Object.is(attrName, 'listblock')) {
+        if (Object.is(attrName, 'listblock')) {
           this.listblock = APP.Helpers.jsonToMap(newValue);
           this.insertListItems();
         }
-
-        this[attrName] = newValue;
 
       }
 
@@ -73,6 +56,43 @@
 
       set listblock(value) {
         this._listblock = value;
+      }
+
+      /**
+       * @description removes all list items before inserting updated items
+       * Looks at a different approach of not recreating list items that already exist
+       * as in a virtual DOM
+       * @param todoUL {object}
+       */
+
+      removeULchildren(todoUL) {
+
+        if (todoUL.children) {
+          while (todoUL.firstChild) {
+            todoUL.removeChild(todoUL.firstChild);
+          }
+        }
+
+      }
+
+      insertListItems() {
+
+        let docfrag = document.createDocumentFragment();
+
+        const todoUL = document.querySelector('.todo-list');
+
+        this.removeULchildren(todoUL);
+
+        for (let [key, value] of this.listblock.entries()) {
+
+          let listBlock = new ViewComponent(key, value.title, value.completed);
+          listBlock.id = key.toString();
+          docfrag.appendChild(listBlock);
+
+        }
+
+        todoUL.appendChild(docfrag);
+
       }
 
     }

@@ -1,91 +1,99 @@
 <template id="view-template">
 
-	<li>
+  <li>
     <span class="view">
       <input class="toggle" type="checkbox" id="view-toggle"/>
       <label for="view-toggle">here</label>
       <button is="extend-button" class="destroy"></button>
     </span>
-	</li>
+  </li>
 
 </template>
 
 <script>
-	/**
-	 *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-	 *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
-	 */
-	(function (document, window) {
+  /**
+   *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
+   *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
+   */
+  (function (document, window) {
 
-		const docU = (document._currentScript || document.currentScript).ownerDocument;
-		const template = docU.querySelector('#view-template');
+    const docU = (document._currentScript || document.currentScript).ownerDocument;
+    const template = docU.querySelector('#view-template');
 
-		class ViewComponent extends HTMLElement {
+    class ViewComponent extends HTMLElement {
 
-			constructor (key, title, completed) {
-				super();
-				this._key = key;
-				this._title = title;
-				this._complete = completed;
-			}
+      constructor(key, title, completed) {
+        super();
+        this._key = key;
+        this._title = title;
+        this._complete = completed;
+      }
 
-			connectedCallback () {
+      connectedCallback() {
 
-				const temp = docU.importNode(this.buildNode(template.content), true);
-				this.appendChild(temp);
+        const temp = docU.importNode(this.buildNode(template.content), true);
+        this.appendChild(temp);
+        this.attachEvents();
+      }
 
-			}
+      disconnectedCallback() {
+        this.removeEventListener('click', this.onClick, false);
+      }
 
-			attachEvents () {
-				this.addEventListener('clicked', this.onClick, false);
-			}
+      attachEvents() {
+        this.addEventListener('click', this.onClick, false);
+      }
 
-			onClick () {
+      onClick() {
 
-				// attributes and properties come in
-				// events come out
+        this._complete = !this._complete;
+        this.setCheckBox(this);
 
-				// dispatch events for every state change
+        const evt = new CustomEvent('update', {
+          detail: { id: this._key, completed: this._complete }, bubbles: true
+        });
 
-				this.checked = !this.checked;
-				this.dispatchEvent(new CustomEvent('checked-changed', {
-					detail: {checked: this.checked}, bubbles: false
-				}));
+        this.dispatchEvent(evt);
 
-			}
+      }
 
-			/**
-			 * @description Build the list item in the document fragment.
-			 * Performant because it doesn't access the DOM
-			 * @param content {object} document fragment
-			 * @returns {*}
-			 */
+      /**
+       * @description Build the list item in the document fragment.
+       * Performant because it doesn't access the DOM
+       * @param content {object} document fragment
+       * @returns {*}
+       */
 
-			buildNode (content) {
+      buildNode(content) {
 
-				// input and label need to be unique for valid html
-				content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
-				content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
+        // input and label need to be unique for valid html
+        content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
+        content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
 
-				content.querySelector('li').dataset.id = this._key;
+        content.querySelector('li').dataset.id = this._key;
 
-				// use textContent to prevent XSS attacks
-				content.querySelector('label').textContent = this._title;
+        // use textContent to prevent XSS attacks
+        content.querySelector('label').textContent = this._title;
 
-				if (!!this._complete) {
-					content.querySelector('input').setAttribute('checked', 'checked');
-				}
+        if (!!this._complete) {
+          this.setCheckBox(content, !!this._complete);
+        }
 
-				return content;
+        return content;
 
-			}
+      }
 
-		}
+      setCheckBox(content) {
+        content.querySelector('input').setAttribute('checked', 'checked');
+        content.querySelector('li').classList.add('completed');
+      }
 
-		window.ViewComponent = ViewComponent;
+    }
 
-		window.customElements.define('view-component', ViewComponent);
+    window.ViewComponent = ViewComponent;
 
-	})(document, window);
+    window.customElements.define('view-component', ViewComponent);
+
+  })(document, window);
 
 </script>
