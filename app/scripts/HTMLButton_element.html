@@ -1,10 +1,11 @@
 <script>
+
   (function (document, window) {
 
     class ExtendButton extends HTMLButtonElement {
 
       constructor () {
-        super(...arguments);
+        super();
       }
 
       connectedCallback () {
@@ -26,7 +27,11 @@
 
     }
 
-    window.customElements.define('extend-button', ExtendButton, { extends: 'button' });
+    window.addEventListener('WebComponentsReady', function() {
+      // imports are loaded and elements have been registered
+      window.customElements.define('extend-button', ExtendButton, { extends: 'button' });
+
+    });
 
   })(document, window);
 </script>

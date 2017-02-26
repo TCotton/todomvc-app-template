@@ -256,10 +256,10 @@
 
 		// Change `no-js` to `js` (independently of the `enableClasses` option)
 		// Handle classPrefix on this too
-		if (Modernizr._config.enableJSClass) {
+	/*	if (Modernizr._config.enableJSClass) {
 			var reJS = new RegExp('(^|\\s)' + classPrefix + 'no-js(\\s|$)');
 			className = className.replace(reJS, '$1' + classPrefix + 'js$2');
-		}
+		}*/
 
 		if (Modernizr._config.enableClasses) {
 			// Add the new classes

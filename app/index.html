@@ -17,14 +17,12 @@
 
 	<script>
     !function(a){"use strict";var b=function(b,c,d){function j(a){return e.body?a():void setTimeout(function(){j(a)})}function l(){f.addEventListener&&f.removeEventListener("load",l),f.media=d||"all"}var g,e=a.document,f=e.createElement("link");if(c)g=c;else{var h=(e.body||e.getElementsByTagName("head")[0]).childNodes;g=h[h.length-1]}var i=e.styleSheets;f.rel="stylesheet",f.href=b,f.media="only x",j(function(){g.parentNode.insertBefore(f,c?g:g.nextSibling)});var k=function(a){for(var b=f.href,c=i.length;c--;)if(i[c].href===b)return a();setTimeout(function(){k(a)})};return f.addEventListener&&f.addEventListener("load",l),f.onloadcssdefined=k,k(l),f};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this),function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(a){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
-  	</script>
+  </script>
 
   <!-- build:js scripts/main.min.js -->
-	<script rel="preload" async
-			src="//cdnjs.cloudflare.com/ajax/libs/document-register-element/1.1.1/document-register-element.js"></script>
+  <script rel="preload" src="https://e2a932ff6bd7e6ab5050-36c27361a8fd0c41e6433f2373919198.ssl.cf3.rackcdn.com/webcomponents-lite.js"></script>
 	<script rel="preload" src="scripts/libraries/modernizr.js"></script>
 	<script rel="preload" src="scripts/libraries/director.js"></script>
-	<script rel="preload" async src="scripts/load-polyfills.js"></script>
 	<script rel="preload" src="scripts/base.js"></script>
 	<script rel="preload" src="scripts/mediator.js"></script>
 	<script rel="preload" src="scripts/store.js"></script>
