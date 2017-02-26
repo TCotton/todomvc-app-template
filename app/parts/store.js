@@ -1,5 +1,6 @@
+APP.store = (((APP) => {
 
-const store = (((window, mediator) => {
+  const mediator = APP.mediator;
 
   const mapToJson = (map) => {
     return JSON.stringify([...map]);
@@ -74,4 +75,4 @@ const store = (((window, mediator) => {
     update
   };
 
-})(window, mediator));
+})(APP));

@@ -15,7 +15,7 @@
 
 <script>
 
-  (function (document, window, mediator, ViewComponent) {
+  (function (document, window, APP, ViewComponent) {
 
     const docU = (document._currentScript || document.currentScript).ownerDocument;
     const template = docU.querySelector('#main-template');
@@ -39,7 +39,7 @@
 
         let docfrag = document.createDocumentFragment();
 
-        for (let [key, value] of mediator.todosData.entries()) {
+        for (let [key, value] of APP.mediator.todosData.entries()) {
 
           let listBlock = new ViewComponent(key, value.title, value.completed);
           docfrag.appendChild(listBlock);
@@ -59,6 +59,6 @@
 
     window.customElements.define('main-component', MainComponent);
 
-  })(document, window, mediator, ViewComponent);
+  })(document, window, APP, ViewComponent);
 
 </script>

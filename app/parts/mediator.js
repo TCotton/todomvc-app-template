@@ -1,4 +1,4 @@
-const mediator = ((() => {
+APP.mediator = ((() => {
 
   /**
    * @description Subscribe to an event, supply a callback to be executed when that event is broadcast
@@ -8,11 +8,11 @@ const mediator = ((() => {
    */
   const subscribe = function (store, fn) {
 
-    if (!mediator.stores[store]) {
-      mediator.stores[store] = [];
+    if (!APP.mediator.stores[store]) {
+      APP.mediator.stores[store] = [];
     }
 
-    mediator.stores[store].push({ context: this, callback: fn });
+    APP.mediator.stores[store].push({ context: this, callback: fn });
 
     return this;
   };
@@ -25,11 +25,11 @@ const mediator = ((() => {
    */
   const publish = function (store, ...args) {
 
-    if (!mediator.stores[store]) {
+    if (!APP.mediator.stores[store]) {
       return false;
     }
 
-    for (let value of mediator.stores[store]) {
+    for (let value of APP.mediator.stores[store]) {
       const subscription = value;
       subscription.callback.apply(subscription.context, args);
     }

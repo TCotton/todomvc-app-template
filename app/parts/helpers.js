@@ -1,5 +1,23 @@
 class Helpers {
 
+  /**
+   * @description helper method that stringifies a map
+   * @param map {Map}
+   * @return {string}
+   */
+  static mapToJson(map) {
+    return JSON.stringify([...map]);
+  }
+
+  /**
+   * @description helper method that parse a string and creates map
+   * @param jsonStr {string}
+   * @returns {Map}
+   */
+  static jsonToMap(jsonStr) {
+    return new Map(JSON.parse(jsonStr));
+  }
+
   static createNode(html) {
     return new DOMParser().parseFromString(html, 'text/html').body.firstChild;
   }
