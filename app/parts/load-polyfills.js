@@ -1,3 +1,8 @@
+/**
+ * There is no need to use Modernizr and the polyfill load below
+ * By using the webcomponents.lite script this comes with it's only
+ * feature detection and careful polyfill: load https://github.com/webcomponents/webcomponentsjs/blob/v1/webcomponents-loader.js
+ */
 (function (Modernizr) {
 
 	Modernizr.addTest('domshadow', function () {
