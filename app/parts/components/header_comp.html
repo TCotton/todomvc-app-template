@@ -37,8 +37,8 @@
 
       keyDownEvent(event) {
 
-        if (Object.is(event.keyCode, window.TODO.ENTER_KEY) && !Object.is(event.target.value.length, 0)) {
-          APP.store.add(event.target.value.trim());
+        if (Object.is(event.keyCode, APP.CONSTS.ENTER_KEY) && !Object.is(event.target.value.length, 0)) {
+          APP.Store.add(event.target.value.trim());
         }
 
       }

@@ -1,3 +1,3 @@
-APP.TODO = {};
-APP.TODO.ENTER_KEY = 13;
-Object.freeze(APP.TODO);
+APP.CONSTS = {};
+APP.CONSTS.ENTER_KEY = 13;
+Object.freeze(APP.CONSTS);

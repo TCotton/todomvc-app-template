@@ -1,16 +1,8 @@
-APP.store = (((APP) => {
+class Store {
 
-  const mediator = APP.mediator;
+  constructor(APP) {
 
-  const mapToJson = (map) => {
-    return JSON.stringify([...map]);
-  };
-
-  const jsonToMap = (jsonStr) => {
-    return new Map(JSON.parse(jsonStr));
-  };
-
-  (function setLocalStorageDefault() {
+    const mediator = this.mediator = APP.mediator;
 
     /**
      * @type {Storage}
@@ -22,19 +14,13 @@ APP.store = (((APP) => {
       const todosData = new Map();
       const dummyData = { id: Date.now(), title: 'Bake a JavaScript cake', completed: false };
       todosData.set(dummyData.id, { title, completed } = dummyData);
-      localStorage.setItem('todo', mapToJson(todosData));
+      localStorage.setItem('todo', APP.Helpers.mapToJson(todosData));
 
     }
 
-  }());
+    mediator.todosData = APP.Helpers.jsonToMap(localStorage.getItem('todo')) || new Map();
 
-  /**
-   *
-   */
-
-  (function initialize() {
-
-    mediator.todosData = jsonToMap(localStorage.getItem('todo')) || new Map();
+    this.dataFlow(mediator.todosData);
 
     mediator.subscribe('todos', function ({ id, title, completed = false, clear = false }) {
 
@@ -44,35 +30,35 @@ APP.store = (((APP) => {
 
       mediator.todosData.set(id, { title, completed });
 
-    });
+      this.dataFlow(mediator.todosData);
 
-  }());
+    }.bind(this));
 
-  /**
-   *
-   * @param title {string}
-   */
+  }
 
-  const add = (title) => {
+  dataFlow(data) {
+    const mainComp = document.querySelector('main-component');
+    mainComp.setAttribute('listblock', APP.Helpers.mapToJson(data));
+  }
 
-      // is rejection needed on a to add promise?
-      // what will be rejected?
-      mediator.publish('todos', { id: Date.now(), title, completed: false });
+  add(title) {
 
-  };
+    // is rejection needed on a to add promise?
+    // what will be rejected?
+    this.mediator.publish('todos', { id: Date.now(), title, completed: false });
 
-  const remove = () => {
+  }
+
+  remove() {
     console.log('remove');
-  };
+  }
 
-  const update = () => {
+  update() {
     console.log('update');
-  };
+  }
 
-  return {
-    add,
-    remove,
-    update
-  };
+}
 
-})(APP));
+window.onload = () => {
+  APP.Store = new Store(APP);
+};

@@ -25,9 +25,9 @@
 
   <!-- build:js scripts/main.min.js -->
   <script rel="preload" src="https://e2a932ff6bd7e6ab5050-36c27361a8fd0c41e6433f2373919198.ssl.cf3.rackcdn.com/webcomponents-lite.js"></script>
-	<script rel="preload" src="parts/libraries/director.js"></script>
-	<script rel="preload" src="parts/mediator.js"></script>
-	<script rel="preload" src="parts/store.js"></script>
+	<script rel="preload" async src="parts/libraries/director.js"></script>
+	<script rel="preload" async src="parts/mediator.js"></script>
+	<script rel="preload" async src="parts/store.js"></script>
 	<script rel="preload" async src="parts/helpers.js"></script>
 	<script rel="preload" async src="parts/constants.js"></script>
 	<script rel="preload" async src="parts/router.js"></script>
@@ -45,7 +45,7 @@
 
 	<!-- This section should be hidden by default and shown when there are todos -->
 
-	<main-component></main-component>
+	<main-component listblock="data"></main-component>
 
 	<!-- This footer should hidden by default and shown when there are todos -->
 

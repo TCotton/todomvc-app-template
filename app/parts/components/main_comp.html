@@ -22,6 +22,10 @@
 
     class MainComponent extends HTMLElement {
 
+      static get observedAttributes() {
+        return ['listblock']
+      }
+
       constructor() {
         super();
       }
@@ -31,28 +35,44 @@
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
 
-        this.insertListItems();
-
       }
 
       insertListItems() {
 
         let docfrag = document.createDocumentFragment();
 
-        for (let [key, value] of APP.mediator.todosData.entries()) {
+        for (let [key, value] of this.listblock.entries()) {
 
           let listBlock = new ViewComponent(key, value.title, value.completed);
           docfrag.appendChild(listBlock);
-/*
-          console.log(key);
-          console.log(value.title);
-          console.log(value.completed);
-          console.log('break');*/
 
         }
 
         document.querySelector('.todo-list').appendChild(docfrag);
 
+      }
+
+      attributeChangedCallback(attrName, oldValue, newValue) {
+
+        if(Object.is(oldValue, newValue) || Object.is(oldValue, null)) {
+          return;
+        }
+
+        if(Object.is(attrName, 'listblock')) {
+          this.listblock = APP.Helpers.jsonToMap(newValue);
+          this.insertListItems();
+        }
+
+        this[attrName] = newValue;
+
+      }
+
+      get listblock() {
+        return this._listblock;
+      }
+
+      set listblock(value) {
+        this._listblock = value;
       }
 
     }
