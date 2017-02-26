@@ -41,6 +41,7 @@ class Store {
 
     this.update();
     this.add();
+    this.delete();
 
   }
 
@@ -62,8 +63,20 @@ class Store {
 
   }
 
-  remove() {
-    console.log('remove');
+  delete() {
+
+    document.body.addEventListener('delete', function (event) {
+
+      console.log(this.mediator.todosData.size);
+
+      this.mediator.todosData.delete(Number.parseInt(event.detail.id));
+
+      this.dataFlow(this.mediator.todosData);
+
+      console.log(this.mediator.todosData.size);
+
+    }.bind(this));
+
   }
 
   update() {

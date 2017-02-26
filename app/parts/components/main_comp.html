@@ -34,7 +34,12 @@
 
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
+        this.attachEvents();
 
+      }
+
+      disconnectedCallback() {
+        this.removeEventListener('click', this.onClick);
       }
 
       attributeChangedCallback(attrName, oldValue, newValue) {
@@ -56,6 +61,26 @@
 
       set listblock(value) {
         this._listblock = value;
+      }
+
+      attachEvents() {
+        this.addEventListener('click', this.onClick, false);
+      }
+
+      onClick(event) {
+
+        if (Object.is(event.target.className, 'destroy')) {
+
+          const id = APP.Helpers.findParent(event.target);
+
+          const evt = new CustomEvent('delete', {
+            detail: { id: id.dataset.id }, bubbles: true
+          });
+
+          this.dispatchEvent(evt);
+
+        }
+
       }
 
       /**

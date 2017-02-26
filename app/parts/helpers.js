@@ -65,6 +65,25 @@ class Helpers {
       .replace(/&amp;/g, '&');
   }
 
+  /**
+   * @description find nodeType based on
+   * @param node {object}
+   * @returns {*}
+   */
+
+  static findParent(node) {
+
+    if (Object.is(node.nodeType, 1)) {
+
+      if (node.parentElement.hasAttribute('data-id') && Object.is(node.parentElement.tagName, 'LI')) {
+        return node.parentElement;
+      }
+
+      return this.findParent(node.parentElement);
+
+    }
+
+  }
 }
 
 APP.Helpers = Helpers;
