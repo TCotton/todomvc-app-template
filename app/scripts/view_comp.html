@@ -36,11 +36,22 @@
 
       }
 
+      /**
+       * @description Build the list item in the document fragment.
+       * Performant because it doesn't access the DOM
+       * @param content {object} document fragment
+       * @returns {*}
+       */
+
       buildNode(content) {
 
+        // input and label need to be unique for valid html
         content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
         content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
+
         content.querySelector('li').dataset.id = this._key;
+
+        // use textContent to prevent XSS attacks
         content.querySelector('label').textContent = this._title;
 
         if(!!this._complete) {
