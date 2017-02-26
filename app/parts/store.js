@@ -58,13 +58,27 @@ class Store {
 
   dataFlowTotal() {
     const mainComp = document.querySelector('footer-component');
-    mainComp.setAttribute('total', this.mediator.todosData.size.toString());
+
+    let i = 0;
+
+    for (let value of this.mediator.todosData.values()) {
+
+      if (Object.is(value.completed, false)) {
+        i++;
+      }
+
+    }
+
+    console.log(i);
+
+    mainComp.setAttribute('total', i.toString());
   }
 
   add() {
 
     document.body.addEventListener('add', function (event) {
-      this.mediator.publish('todos', { id: Date.now(), title: event.detail.title, completed: false });
+      this.mediator.todosData.set(Date.now(), { id: Date.now(), title: event.detail.title, completed: false });
+      this.dataFlow(this.mediator.todosData);
       this.dataFlowTotal();
     }.bind(this));
 
@@ -95,7 +109,11 @@ class Store {
       console.log(this.mediator.todosData.size);
 
       const todoItem = this.mediator.todosData.get(event.detail.id);
-      this.mediator.todosData.set(todoItem.id, {id: todoItem.id, title: todoItem.title, completed: event.detail.completed});
+      this.mediator.todosData.set(todoItem.id, {
+        id: todoItem.id,
+        title: todoItem.title,
+        completed: event.detail.completed
+      });
 
       console.log(this.mediator.todosData.size);
 

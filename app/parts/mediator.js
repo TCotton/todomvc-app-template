@@ -40,10 +40,6 @@ APP.mediator = ((() => {
   return {
     stores: {},
     publish,
-    subscribe,
-    installTo(obj) {
-      obj.subscribe = subscribe;
-      obj.publish = publish;
-    }
+    subscribe
   };
 })());
