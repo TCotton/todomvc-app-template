@@ -32,6 +32,10 @@
 
     class FooterComponent extends HTMLElement {
 
+      static get observedAttributes() {
+        return ['total']
+      }
+
       constructor() {
         super();
       }
@@ -40,6 +44,31 @@
 
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
+      }
+
+      attributeChangedCallback(attrName, oldValue, newValue) {
+
+        if (Object.is(oldValue, newValue)) {
+          return;
+        }
+
+        if (Object.is(attrName, 'total')) {
+          this.total = newValue;
+        }
+
+      }
+
+      get total() {
+        return this._total;
+      }
+
+      set total(value) {
+        this._total = value;
+
+        if (this.querySelector('.todo-count strong')) {
+          this.querySelector('.todo-count strong').innerText = this._total;
+        }
+
       }
 
     }

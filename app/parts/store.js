@@ -36,6 +36,7 @@ class Store {
       mediator.todosData.set(id, { title, completed });
 
       this.dataFlow(mediator.todosData);
+      this.dataFlowTotal();
 
     }.bind(this));
 
@@ -55,10 +56,16 @@ class Store {
     mainComp.setAttribute('listblock', APP.Helpers.mapToJson(data));
   }
 
+  dataFlowTotal() {
+    const mainComp = document.querySelector('footer-component');
+    mainComp.setAttribute('total', this.mediator.todosData.size.toString());
+  }
+
   add() {
 
     document.body.addEventListener('add', function (event) {
       this.mediator.publish('todos', { id: Date.now(), title: event.detail.title, completed: false });
+      this.dataFlowTotal();
     }.bind(this));
 
   }
@@ -72,6 +79,8 @@ class Store {
       this.mediator.todosData.delete(Number.parseInt(event.detail.id));
 
       this.dataFlow(this.mediator.todosData);
+
+      this.dataFlowTotal();
 
       console.log(this.mediator.todosData.size);
 
