@@ -1,73 +1,91 @@
 <template id="view-template">
 
-  <li>
+	<li>
     <span class="view">
-      <input class="toggle" type="checkbox" id="view-toggle" />
+      <input class="toggle" type="checkbox" id="view-toggle"/>
       <label for="view-toggle">here</label>
       <button is="extend-button" class="destroy"></button>
     </span>
-  </li>
+	</li>
 
 </template>
 
 <script>
-  /**
-   *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-   *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
-   */
-  (function (document, window) {
+	/**
+	 *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
+	 *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
+	 */
+	(function (document, window) {
 
-    const docU = (document._currentScript || document.currentScript).ownerDocument;
-    const template = docU.querySelector('#view-template');
+		const docU = (document._currentScript || document.currentScript).ownerDocument;
+		const template = docU.querySelector('#view-template');
 
-    class ViewComponent extends HTMLElement {
+		class ViewComponent extends HTMLElement {
 
-      constructor(key, title, completed) {
-        super();
-        this._key = key;
-        this._title = title;
-        this._complete = completed;
-      }
+			constructor (key, title, completed) {
+				super();
+				this._key = key;
+				this._title = title;
+				this._complete = completed;
+			}
 
-      connectedCallback() {
+			connectedCallback () {
 
-        const temp = docU.importNode(this.buildNode(template.content), true);
-        this.appendChild(temp);
+				const temp = docU.importNode(this.buildNode(template.content), true);
+				this.appendChild(temp);
 
-      }
+			}
 
-      /**
-       * @description Build the list item in the document fragment.
-       * Performant because it doesn't access the DOM
-       * @param content {object} document fragment
-       * @returns {*}
-       */
+			attachEvents () {
+				this.addEventListener('clicked', this.onClick, false);
+			}
 
-      buildNode(content) {
+			onClick () {
 
-        // input and label need to be unique for valid html
-        content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
-        content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
+				// attributes and properties come in
+				// events come out
 
-        content.querySelector('li').dataset.id = this._key;
+				// dispatch events for every state change
 
-        // use textContent to prevent XSS attacks
-        content.querySelector('label').textContent = this._title;
+				this.checked = !this.checked;
+				this.dispatchEvent(new CustomEvent('checked-changed', {
+					detail: {checked: this.checked}, bubbles: false
+				}));
 
-        if(!!this._complete) {
-          content.querySelector('input').setAttribute('checked', 'checked');
-        }
+			}
 
-        return content;
+			/**
+			 * @description Build the list item in the document fragment.
+			 * Performant because it doesn't access the DOM
+			 * @param content {object} document fragment
+			 * @returns {*}
+			 */
 
-      }
+			buildNode (content) {
 
-    }
+				// input and label need to be unique for valid html
+				content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
+				content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
 
-    window.ViewComponent = ViewComponent;
+				content.querySelector('li').dataset.id = this._key;
 
-    window.customElements.define('view-component', ViewComponent);
+				// use textContent to prevent XSS attacks
+				content.querySelector('label').textContent = this._title;
 
-  })(document, window, Helpers);
+				if (!!this._complete) {
+					content.querySelector('input').setAttribute('checked', 'checked');
+				}
+
+				return content;
+
+			}
+
+		}
+
+		window.ViewComponent = ViewComponent;
+
+		window.customElements.define('view-component', ViewComponent);
+
+	})(document, window, Helpers);
 
 </script>
