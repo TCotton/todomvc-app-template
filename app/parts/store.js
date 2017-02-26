@@ -2,7 +2,7 @@ class Store {
 
   constructor(APP) {
 
-    const mediator = this.mediator = APP.mediator;
+    this.mediator = {};
 
     /**
      * @type {Storage}
@@ -23,22 +23,10 @@ class Store {
 
     }
 
-    mediator.todosData = APP.Helpers.jsonToMap(localStorage.getItem('todo')) || new Map();
+    this.mediator.todosData = APP.Helpers.jsonToMap(localStorage.getItem('todo')) || new Map();
 
-    this.dataFlow(mediator.todosData);
-
-    mediator.subscribe('todos', function ({ id, title, completed = false, clear = false }) {
-
-      if (clear) {
-        mediator.todosData.clear();
-      }
-
-      mediator.todosData.set(id, { title, completed });
-
-      this.dataFlow(mediator.todosData);
-      this.dataFlowTotal();
-
-    }.bind(this));
+    this.dataFlow(this.mediator.todosData);
+    this.dataFlowTotal();
 
     this.update();
     this.add();
@@ -68,8 +56,6 @@ class Store {
       }
 
     }
-
-    console.log(i);
 
     mainComp.setAttribute('total', i.toString());
   }
