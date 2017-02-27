@@ -84,6 +84,7 @@ class Helpers {
     }
 
   }
+
 }
 
 APP.Helpers = Helpers;

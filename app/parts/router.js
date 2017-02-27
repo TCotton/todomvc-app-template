@@ -1,27 +1,43 @@
-(function (Router) {
+window.addEventListener('WebComponentsReady', () => {
 
-  const home = function () {
-    console.log('home');
+  // TODO: move all class changes into the relevant component
 
+  (function (Router, document) {
 
-  };
-  const completed = function () {
-    console.log('completed');
+    const footerComp = document.querySelector('footer-component');
+    const mainComp = document.querySelector('main-component');
 
-  };
-  const active = function () {
-    console.log('active');
+    const home = function () {
+      mainComp.setAttribute('display', 'home');
 
-  };
+      footerComp.querySelector('.selected').className = '';
+      footerComp.querySelector(`[href="#/"]`).classList.add('selected');
+    };
 
-  const routes = {
-    '/': home,
-    completed,
-    active
-  };
+    const completed = function () {
+      mainComp.setAttribute('display', 'completed');
 
-  const router = Router(routes);
+      footerComp.querySelector('.selected').className = '';
+      footerComp.querySelector(`[href="#/completed"]`).classList.add('selected');
+    };
 
-  router.init();
+    const active = function () {
+      mainComp.setAttribute('display', 'active');
 
-})(Router);
+      footerComp.querySelector('.selected').className = '';
+      footerComp.querySelector(`[href="#/active"]`).classList.add('selected');
+    };
+
+    const routes = {
+      '/': home,
+      completed,
+      active
+    };
+
+    const router = Router(routes);
+
+    router.init();
+
+  })(Router, document);
+
+});
