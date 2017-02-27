@@ -95,11 +95,17 @@ class Store {
       console.log(this.mediator.todosData.size);
 
       const todoItem = this.mediator.todosData.get(event.detail.id);
+      console.dir(todoItem.completed);
+      console.dir(event.detail.completed);
       this.mediator.todosData.set(todoItem.id, {
         id: todoItem.id,
         title: todoItem.title,
-        completed: event.detail.completed
+        completed: event.detail.completed || todoItem.completed
       });
+
+      if(!event.detail.completed) {
+        this.dataFlow(this.mediator.todosData);
+      }
 
       console.log(this.mediator.todosData.size);
 

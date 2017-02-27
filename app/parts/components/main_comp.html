@@ -53,6 +53,7 @@
         }
 
         if (Object.is(attrName, 'listblock')) {
+          console.dir(newValue);
           this.listblock = APP.Helpers.jsonToMap(newValue);
           this.insertListItems();
         }
