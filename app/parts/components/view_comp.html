@@ -24,11 +24,19 @@
 
     class ViewComponent extends HTMLElement {
 
+      static get is() {
+        return 'view-component';
+      }
+
       constructor(key, title, completed) {
         super();
         this._key = key;
         this._title = title;
         this._complete = completed;
+      }
+
+      static get observedAttributes() {
+        return ['data-display'];
       }
 
       connectedCallback() {
@@ -40,6 +48,47 @@
 
       disconnectedCallback() {
         this.removeEventListener('click', this.onClick, false);
+      }
+
+      attributeChangedCallback(attrName, oldValue, newValue) {
+
+        if (Object.is(oldValue, newValue) || Object.is(oldValue, '1')) {
+          return;
+        }
+
+        if (Object.is(attrName, 'data-display')) {
+          this.data_display = newValue;
+        }
+
+      }
+
+      get data_display() {
+        return this._data_display;
+      }
+
+      set data_display(value) {
+        this._data_display = value;
+        this.setDisplayClass();
+      }
+
+      setDisplayClass() {
+
+        this.removeDisplayClass();
+
+        if (Object.is(this.data_display, 'completed') && Object.is(this._complete, false)) {
+          this.querySelector('li').classList.add('hidden');
+        }
+        if (Object.is(this.data_display, 'active') && Object.is(this._complete, true)) {
+          this.querySelector('li').classList.add('hidden');
+        }
+      }
+
+      removeDisplayClass() {
+
+        if (this.querySelector('li') && this.querySelector('li').classList.contains('hidden')) {
+          this.querySelector('li').classList.remove('hidden');
+        }
+
       }
 
       attachEvents() {

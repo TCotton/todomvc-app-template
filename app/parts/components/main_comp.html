@@ -108,14 +108,13 @@
 
         const display = {
           'home': () => {
-            console.log('home');
+            Array.from(this.querySelectorAll('view-component'), i => i.setAttribute('data-display', 'all'));
           },
           'completed': () => {
-            console.dir(this);
-            console.log('completed');
+            Array.from(this.querySelectorAll('view-component'), i => i.setAttribute('data-display', 'completed'));
           },
           'active': () => {
-            console.log('active');
+            Array.from(this.querySelectorAll('view-component'), i => i.setAttribute('data-display', 'active'));
           }
         };
         return display[this._display]();
