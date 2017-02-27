@@ -3,10 +3,8 @@
   <li>
     <span class="view">
       <input class="toggle" type="checkbox" id="view-toggle"/>
-      <label for="view-toggle">here</label>
+      <label for="view-toggle"></label>
       <button is="extend-button" class="destroy"></button>
-      <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
-      <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
     </span>
   </li>
 
@@ -14,7 +12,7 @@
 
 <script>
   /**
-   *  <label for="toggle-edit" class="visuallyhidden">Edit the to do entry</label>
+   *  <label for="toggle-edit">Edit the to do entry</label>
    *  <input class="edit" id="toggle-edit" value="Create a TodoMVC template"/>
    */
   (function (document, window) {
@@ -71,6 +69,14 @@
         this.setDisplayClass();
       }
 
+      get edit_node() {
+        return this._edit_node;
+      }
+
+      set edit_node(value) {
+        this._edit_node = value;
+      }
+
       setDisplayClass() {
 
         this.removeDisplayClass();
@@ -97,6 +103,14 @@
 
       onClick(event) {
 
+        if (event.target.htmlFor && event.target.htmlFor.includes('view-toggle')) {
+          this.querySelector('li').classList.add('editing');
+          this.querySelector('li').appendChild(this.edit_node).addEventListener('blur', function( event ) {
+            event.target.remove();
+            this.querySelector('li').classList.remove('editing');
+          }.bind(this), true);
+        }
+
         if (event.target.id.includes('view-toggle')) {
 
           this._complete = !this._complete;
@@ -122,13 +136,20 @@
       buildNode(content) {
 
         // input and label need to be unique for valid html
-        content.querySelector('input').id = content.querySelector('input').id + '_' + this._key;
-        content.querySelector('label').htmlFor = content.querySelector('label').htmlFor + '_' + this._key;
+        content.querySelector('input[id*=view-toggle]').id = content.querySelector('input[id*=view-toggle]').id + '_' + this._key;
+        content.querySelector('label[for*=view-toggle]').htmlFor = content.querySelector('label[for*=view-toggle]').htmlFor + '_' + this._key;
 
         content.querySelector('li').dataset.id = this._key;
 
         // use textContent to prevent XSS attacks
-        content.querySelector('label').textContent = this._title;
+        content.querySelector('label[for*=view-toggle]').textContent = this._title;
+
+        const editNode = document.createElement('input');
+        editNode.className = 'edit';
+        editNode.id = 'edit_toggle_' + this._key;
+        editNode.value = this._title;
+
+        this.edit_node = editNode;
 
         if (!!this._complete) {
           this.setCheckBox(content, !!this._complete);
