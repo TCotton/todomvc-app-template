@@ -18,7 +18,7 @@ class Store {
 
       const todosData = new Map();
       const dummyData = { id: Date.now(), title: 'Bake a JavaScript cake', completed: false };
-      todosData.set(dummyData.id, { title, completed } = dummyData);
+      todosData.set(dummyData.id, dummyData);
       localStorage.setItem('todo', APP.Helpers.mapToJson(todosData));
 
     }

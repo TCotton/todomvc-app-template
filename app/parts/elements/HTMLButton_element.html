@@ -13,8 +13,6 @@
 
       connectedCallback() {
 
-        console.dir(arguments);
-
         const docfrag = document.createDocumentFragment();
         docfrag.appendChild(document.createElement('button'));
         this.appendChild(docfrag);
@@ -26,8 +24,6 @@
       }
 
       attributeChangedCallback(attrName, oldValue, newValue) {
-
-        console.log(oldValue);
 
         if (Object.is(attrName, 'data-classname')) {
           this.data_display = oldValue;
