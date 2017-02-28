@@ -103,27 +103,29 @@
 
       onClick(event) {
 
-        if (event.target.htmlFor && event.target.htmlFor.includes('view-toggle')) {
+        /* if (event.target.htmlFor && event.target.htmlFor.includes('view-toggle')) {
 
-          this.querySelector('li').classList.add('editing');
+         this.querySelector('li').classList.add('editing');
 
-          this.querySelector('li').appendChild(this.edit_node).addEventListener('keydown', function (event) {
+         this.querySelector('li').appendChild(this.edit_node).addEventListener('keydown', function (event) {
 
-            if (Object.is(event.keyCode, APP.CONSTS.ENTER_KEY) && !Object.is(event.target.value.length, 0)) {
+         if (Object.is(event.keyCode, APP.CONSTS.ENTER_KEY) && !Object.is(event.target.value.length, 0)) {
 
-              const evt = new CustomEvent('update', {
-                detail: { id: this._key, title: event.target.value.trim() }, bubbles: true
-              });
+         const evt = new CustomEvent('update', {
+         detail: { id: this._key, title: event.target.value.trim() }, bubbles: true
+         });
 
-              this.dispatchEvent(evt);
+         this.dispatchEvent(evt);
 
-            }
+         }
 
-          }.bind(this), true);
+         }.bind(this), true);
 
-        }
+         }*/
 
         if (event.target.id.includes('view-toggle') && Object.is(event.target.type, 'checkbox')) {
+
+          console.dir(event.target);
 
           console.dir(event.target);
 
