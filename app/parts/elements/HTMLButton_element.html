@@ -40,11 +40,48 @@
 
     }
 
+  })(document, window);
+
+</script>
+
+<template id="expand-button-template">
+
+  <link rel="stylesheet" href="styles/shared_button_styles.css">
+
+  <style>
+    :host {
+      border: 10px solid black;
+      display: block;
+    }
+
+    button {
+      background: red
+    }
+  </style>
+
+  <div class="little-component">
+    <h2>This is the H2 tag</h2>
+    <input type="text" class="input-text" placeholder="text here and here"/>
+    <slot class="slotted" name="slot-button">
+      <button>fallback content</button>
+    </slot>
+    <slot class="slotted-data" name="slotted-data">
+      <div id="text" contentEditable>Type something in here and look at the console.
+    </slot>
+  </div>
+
+</template>
+
+<script>
+
+  const docU = (document._currentScript || document.currentScript).ownerDocument;
+  const template = docU.querySelector('#expand-button-template');
+
+  (function (document, window) {
 
     class ExtendButtonTwo extends HTMLElement {
       constructor() {
         super();
-
       }
 
       static get observedAttributes() {
@@ -55,16 +92,8 @@
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
 
-        let template = '<link rel="stylesheet" href="styles/shared_button_styles.css">';
-        template += '<style>:host{border: 10px solid black; display: block;} button {background: red}</style>';
-        template += `<div class="little-component"><h2>This is the H2 tag</h2>
-<input type="text" class="input-text" placeholder="text here and here"/>
-<slot class="slotted" name="slot-button"><button>fallback content</button></slot>
-<slot class="slotted-data" name="slotted-data">
-<div id="text" contentEditable>Type something in here and look at the console.</slot>
-</div>
-</div>`;
-        shadowRoot.innerHTML = template;
+        const temp = docU.importNode(template.content, true);
+        shadowRoot.appendChild(temp);
 
         this.addMutationObserver(shadowRoot);
 
@@ -75,14 +104,14 @@
 
           console.dir(event.target.value);
 
-        },false);
+        }, false);
 
       }
 
       addMutationObserver(node) {
 
         const observer = new MutationObserver(function (mutations) {
-          mutations.forEach(function(mutation) {
+          mutations.forEach(function (mutation) {
             const entry = {
               mutation: mutation,
               el: mutation.target,
@@ -154,4 +183,5 @@
     });
 
   })(document, window);
+
 </script>

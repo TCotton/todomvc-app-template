@@ -91,17 +91,22 @@ gulp.task('styles', () => {
 
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    'app/styles/**/*.css'
+    'app/styles/reset.css',
+    'app/styles/css_mixins_apply.css',
+    'app/styles/shared_button_styles.css',
+    'app/styles/base.css',
+    'app/styles/index.css',
+    'app/styles/app.css'
   ])
-    .pipe($.newer('.tmp/styles'))
+    .pipe($.newer('app/.tmp/styles'))
     .pipe($.sourcemaps.init())
     .pipe($.postcss(plugins))
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('app/.tmp/styles'))
     // Concatenate and minify styles
     .pipe($.size({ title: 'styles' }))
     .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/styles'))
-    .pipe(gulp.dest('.tmp/styles'));
+    .pipe($.concat('bundle.css'))
+    .pipe(gulp.dest('app/.tmp/styles'));
 });
 
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
