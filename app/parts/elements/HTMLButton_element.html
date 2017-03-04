@@ -119,9 +119,11 @@
       }
 
       addMutationObserver(node) {
-        
-        const observer = new (MutationObserver || WebKitMutationObserver)(function (mutations) {
-          mutations.forEach(function (mutation) {
+
+        const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
             const entry = {
               mutation: mutation,
               el: mutation.target,
@@ -130,10 +132,9 @@
               attributeName: mutation.attributeName,
               nextSibling: mutation.nextSibling
             };
-            console.log("Recording mutation:', entry);
+            console.log('Recording mutation:', entry);
           });
         });
-
 
         observer.observe(node, {
           childList: true,
