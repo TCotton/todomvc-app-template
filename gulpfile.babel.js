@@ -93,7 +93,7 @@ gulp.task('styles', () => {
   return gulp.src([
     'app/styles/reset.css',
     'app/styles/css_mixins_apply.css',
-    'app/styles/shared_button_styles.css',
+    'app/parts/elements/shared_button_styles.css',
     'app/styles/base.css',
     'app/styles/index.css',
     'app/styles/app.css'

@@ -1,52 +1,6 @@
-<script>
-  (function (document, window) {
-
-    class ExtendButton extends HTMLElement {
-
-      constructor() {
-        super();
-      }
-
-      static get observedAttributes() {
-        return ['data-classname'];
-      }
-
-      connectedCallback() {
-
-        const shadowRoot = this.attachShadow({ mode: 'open' });
-
-        let template = '<style>button {background: red}</style>';
-        template += '<link rel="stylesheet" href="styles/shared_button_styles.css">';
-        template += `<div><h2>This is the H2 tag</h2><slot><button>fallback content</button></slot></div>`;
-        shadowRoot.innerHTML = template;
-
-      }
-
-      attributeChangedCallback(attrName, oldValue, newValue) {
-
-        if (Object.is(attrName, 'data-classname')) {
-          this.data_classname = oldValue;
-        }
-
-      }
-
-      get data_classname() {
-        return this._data_classname;
-      }
-
-      set data_classname(value) {
-        this._data_classname = value;
-      }
-
-    }
-
-  })(document, window);
-
-</script>
-
 <template id="expand-button-template">
 
-  <link rel="stylesheet" href="styles/shared_button_styles.css">
+  <link rel="stylesheet" href="shared_button_styles.css">
 
   <style>
     :host {
@@ -89,8 +43,6 @@
       }
 
       connectedCallback() {
-
-        console.dir(ShadyCSS);
 
         ShadyCSS.prepareTemplate(template, 'extend-button-two');
 
