@@ -77,7 +77,7 @@
   const docU = (document._currentScript || document.currentScript).ownerDocument;
   const template = docU.querySelector('#expand-button-template');
 
-  (function (document, window) {
+  (function (document, window, ShadyCSS) {
 
     class ExtendButtonTwo extends HTMLElement {
       constructor() {
@@ -90,35 +90,47 @@
 
       connectedCallback() {
 
-        const shadowRoot = this.attachShadow({ mode: 'open' });
+        console.dir(ShadyCSS);
 
-        const temp = docU.importNode(template.content, true);
-        shadowRoot.appendChild(temp);
+        ShadyCSS.prepareTemplate(template, 'extend-button-two');
 
-        this.addMutationObserver(shadowRoot);
+        ShadyCSS.styleElement(this);
 
-        shadowRoot.querySelector('.input-text').setAttribute('id', 'whatever');
-        shadowRoot.querySelector('.input-text').setAttribute('id', 'hereitis');
+        if (!this.shadowRoot) {
 
-        shadowRoot.querySelector('.input-text').addEventListener('keydown', (event) => {
+          const shadowRoot = this.attachShadow({ mode: 'open' });
 
-          console.dir(event.target.value);
+          const temp = docU.importNode(template.content, true);
+          shadowRoot.appendChild(temp);
 
-        }, false);
+          this.addMutationObserver(shadowRoot);
+
+          shadowRoot.querySelector('.input-text').setAttribute('id', 'whatever');
+          shadowRoot.querySelector('.input-text').setAttribute('id', 'hereitis');
+
+          shadowRoot.querySelector('.input-text').addEventListener('keydown', (event) => {
+
+            console.dir(event.target.value);
+
+          }, false);
+
+        }
 
       }
 
       addMutationObserver(node) {
-
-        const observer = new MutationObserver(function (mutations) {
+        
+        const observer = new (MutationObserver || WebKitMutationObserver)(function (mutations) {
           mutations.forEach(function (mutation) {
             const entry = {
               mutation: mutation,
               el: mutation.target,
               value: mutation.target.textContent,
-              oldValue: mutation.oldValue
+              oldValue: mutation.oldValue,
+              attributeName: mutation.attributeName,
+              nextSibling: mutation.nextSibling
             };
-            console.log("Recording mutation:", entry);
+            console.log("Recording mutation:', entry);
           });
         });
 
@@ -129,7 +141,8 @@
           characterData: true,
           subtree: true,
           attributeOldValue: true,
-          characterDataOldValue: true
+          characterDataOldValue: true,
+          attributeFilter: []
         });
 
       }
@@ -146,7 +159,6 @@
         }
 
         this.amendDOM();
-
       }
 
       get data_classname() {
@@ -171,17 +183,8 @@
 
     }
 
-    /*    const buttonRegister = new ExtendButton('destroy');
-     const buttonClearCompleted = new ExtendButton('clear-completed');*/
+    window.customElements.define('extend-button-two', ExtendButtonTwo);
 
-    window.addEventListener('WebComponentsReady', function () {
-      // imports are loaded and elements have been registered
-      // window.customElements.define('extend-button', ExtendButton);
-      window.customElements.define('extend-button-two', ExtendButtonTwo);
-      /*  window.customElements.define('data-extend-button', buttonRegister);
-       window.customElements.define('data-extend-button', buttonClearCompleted);*/
-    });
-
-  })(document, window);
+  })(document, window, ShadyCSS);
 
 </script>
