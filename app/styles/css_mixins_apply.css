@@ -1,0 +1,25 @@
+:root {
+  --background-color: {
+    background: purple!important;
+  };
+
+  --mixin-overflow-ellipsis: {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  };
+
+  --pink-theme: {
+    color: #6A8759!important;
+    background-color: #F64778!important;
+  };
+}
+
+button {
+  border: 10px red dashed;
+  @apply: --background-color;
+}
+
+body {
+  @apply --background-color;
+}

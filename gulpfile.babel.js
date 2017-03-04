@@ -31,7 +31,9 @@ import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
 import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
-import {output as pagespeed} from 'psi';
+import autoprefixer from 'autoprefixer';
+import apply from 'postcss-apply';
+import { output as pagespeed } from 'psi';
 import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
@@ -39,7 +41,7 @@ const reload = browserSync.reload;
 
 // Lint JavaScript
 gulp.task('lint', () =>
-  gulp.src(['app/scripts/**/*.js','!node_modules/**'])
+  gulp.src(['app/scripts/**/*.js', '!node_modules/**'])
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
@@ -53,7 +55,7 @@ gulp.task('images', () =>
       interlaced: true
     })))
     .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}))
+    .pipe($.size({ title: 'images' }))
 );
 
 // Copy all files at the root level (app)
@@ -65,7 +67,7 @@ gulp.task('copy', () =>
   ], {
     dot: true
   }).pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'copy'}))
+    .pipe($.size({ title: 'copy' }))
 );
 
 // Compile and automatically prefix stylesheets
@@ -82,21 +84,21 @@ gulp.task('styles', () => {
     'bb >= 10'
   ];
 
+  const plugins = [
+    autoprefixer({ browsers: AUTOPREFIXER_BROWSERS }),
+    apply()
+  ];
+
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    'app/styles/**/*.scss',
     'app/styles/**/*.css'
   ])
     .pipe($.newer('.tmp/styles'))
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      precision: 10
-    }).on('error', $.sass.logError))
-    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe($.postcss(plugins))
     .pipe(gulp.dest('.tmp/styles'))
     // Concatenate and minify styles
-    .pipe($.if('*.css', $.cssnano()))
-    .pipe($.size({title: 'styles'}))
+    .pipe($.size({ title: 'styles' }))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('dist/styles'))
     .pipe(gulp.dest('.tmp/styles'));
@@ -126,9 +128,9 @@ gulp.task('scripts', () =>
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe($.concat('main.min.js'))
-    .pipe($.uglify({preserveComments: 'some'}))
+    .pipe($.uglify({ preserveComments: 'some' }))
     // Output files
-    .pipe($.size({title: 'scripts'}))
+    .pipe($.size({ title: 'scripts' }))
     .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('dist/scripts'))
     .pipe(gulp.dest('.tmp/scripts'))
@@ -155,12 +157,12 @@ gulp.task('html', () => {
       removeOptionalTags: true
     })))
     // Output files
-    .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
+    .pipe($.if('*.html', $.size({ title: 'html', showFiles: true })))
     .pipe(gulp.dest('dist'));
 });
 
 // Clean output directory
-gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
+gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], { dot: true }));
 
 // Watch files for changes & reload
 gulp.task('serve', ['scripts', 'styles'], () => {

@@ -8,17 +8,99 @@
       }
 
       static get observedAttributes() {
+        return ['data-classname'];
+      }
+
+      connectedCallback() {
+
+        const shadowRoot = this.attachShadow({ mode: 'open' });
+
+        let template = '<style>button {background: red}</style>';
+        template += '<link rel="stylesheet" href="styles/shared_button_styles.css">';
+        template += `<div><h2>This is the H2 tag</h2><slot><button>fallback content</button></slot></div>`;
+        shadowRoot.innerHTML = template;
+
+      }
+
+      attributeChangedCallback(attrName, oldValue, newValue) {
+
+        if (Object.is(attrName, 'data-classname')) {
+          this.data_classname = oldValue;
+        }
+
+      }
+
+      get data_classname() {
+        return this._data_classname;
+      }
+
+      set data_classname(value) {
+        this._data_classname = value;
+      }
+
+    }
+
+
+    class ExtendButtonTwo extends HTMLElement {
+      constructor() {
+        super();
+
+      }
+
+      static get observedAttributes() {
         return ['data-classname', 'data-text'];
       }
 
       connectedCallback() {
 
-        const docfrag = document.createDocumentFragment();
-        docfrag.appendChild(document.createElement('button'));
-        this.appendChild(docfrag);
+        const shadowRoot = this.attachShadow({ mode: 'open' });
 
-        this.addEventListener('click', () => {
-          alert('YES!!!!');
+        let template = '<link rel="stylesheet" href="styles/shared_button_styles.css">';
+        template += '<style>:host{border: 10px solid black; display: block;} button {background: red}</style>';
+        template += `<div class="little-component"><h2>This is the H2 tag</h2>
+<input type="text" class="input-text" placeholder="text here and here"/>
+<slot class="slotted" name="slot-button"><button>fallback content</button></slot>
+<slot class="slotted-data" name="slotted-data">
+<div id="text" contentEditable>Type something in here and look at the console.</slot>
+</div>
+</div>`;
+        shadowRoot.innerHTML = template;
+
+        this.addMutationObserver(shadowRoot);
+
+        shadowRoot.querySelector('.input-text').setAttribute('id', 'whatever');
+        shadowRoot.querySelector('.input-text').setAttribute('id', 'hereitis');
+
+        shadowRoot.querySelector('.input-text').addEventListener('keydown', (event) => {
+
+          console.dir(event.target.value);
+
+        },false);
+
+      }
+
+      addMutationObserver(node) {
+
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function(mutation) {
+            const entry = {
+              mutation: mutation,
+              el: mutation.target,
+              value: mutation.target.textContent,
+              oldValue: mutation.oldValue
+            };
+            console.log("Recording mutation:", entry);
+          });
+        });
+
+
+        observer.observe(node, {
+          childList: true,
+          attributes: true,
+          characterData: true,
+          subtree: true,
+          attributeOldValue: true,
+          characterDataOldValue: true
         });
 
       }
@@ -26,8 +108,8 @@
       attributeChangedCallback(attrName, oldValue, newValue) {
 
         if (Object.is(attrName, 'data-classname')) {
-          this.data_display = oldValue;
-          console.log(this.data_display);
+          this.data_classname = oldValue;
+          console.log(this.data_classname);
         }
 
         if (Object.is(attrName, 'data-text')) {
@@ -60,14 +142,15 @@
 
     }
 
+    /*    const buttonRegister = new ExtendButton('destroy');
+     const buttonClearCompleted = new ExtendButton('clear-completed');*/
+
     window.addEventListener('WebComponentsReady', function () {
       // imports are loaded and elements have been registered
-
-
-    });
-
-    window.customElements.whenDefined('header-component').then(() => {
-      window.customElements.define('extend-button', ExtendButton);
+      // window.customElements.define('extend-button', ExtendButton);
+      window.customElements.define('extend-button-two', ExtendButtonTwo);
+      /*  window.customElements.define('data-extend-button', buttonRegister);
+       window.customElements.define('data-extend-button', buttonClearCompleted);*/
     });
 
   })(document, window);

@@ -1,0 +1,9 @@
+:host {
+  all: initial;
+}
+button {
+  background: white;
+}
+.input-text {
+  border: 1px solid blue;
+}

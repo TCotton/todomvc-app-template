@@ -240,11 +240,23 @@ label[for='toggle-all'] {
 }
 
 .footer {
-	color: #777;
+	color: yellow;
 	padding: 10px 15px;
 	height: 20px;
 	text-align: center;
 	border-top: 1px solid #e6e6e6;
+}
+
+.outer-style {
+	color: blue;
+}
+
+.outer-style h2 {
+	color: black;
+}
+
+h2 {
+	font-size: 40px;
 }
 
 .footer:before {
