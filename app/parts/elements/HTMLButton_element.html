@@ -1,145 +1,148 @@
 <template id="expand-button-template">
 
-  <link rel="stylesheet" href="shared_button_styles.css">
+	<style>
+		:host {
+			all: initial;
+			border: 10px solid black;
+			display: block;
+		}
 
-  <style>
-    :host {
-      border: 10px solid black;
-      display: block;
-    }
+		.input-text {
+			border: 1px solid blue;
+		}
 
-    button {
-      background: red
-    }
-  </style>
+		button {
+			background: red
+		}
+	</style>
 
-  <div class="little-component">
-    <h2>This is the H2 tag</h2>
-    <input type="text" class="input-text" placeholder="text here and here"/>
-    <slot class="slotted" name="slot-button">
-      <button>fallback content</button>
-    </slot>
-    <slot class="slotted-data" name="slotted-data">
-      <div id="text" contentEditable>Type something in here and look at the console.
-    </slot>
-  </div>
+	<div class="little-component">
+		<h2>This is the H2 tag</h2>
+		<input type="text" class="input-text" placeholder="text here and here"/>
+		<slot class="slotted" name="slot-button">
+			<button>fallback content</button>
+		</slot>
+		<slot class="slotted-data" name="slotted-data">
+			<div id="text" contentEditable>Type something in here and look at the console.
+		</slot>
+	</div>
 
 </template>
 
 <script>
 
-  const docU = (document._currentScript || document.currentScript).ownerDocument;
-  const template = docU.querySelector('#expand-button-template');
+	const docU = (document._currentScript || document.currentScript).ownerDocument;
+	const template = docU.querySelector('#expand-button-template');
 
-  (function (document, window, ShadyCSS) {
+	(function (document, window, ShadyCSS) {
 
-    class ExtendButtonTwo extends HTMLElement {
-      constructor() {
-        super();
-      }
+		class ExtendButtonTwo extends HTMLElement {
+			constructor () {
+				super();
+			}
 
-      static get observedAttributes() {
-        return ['data-classname', 'data-text'];
-      }
+			static get observedAttributes () {
+				return ['data-classname', 'data-text'];
+			}
 
-      connectedCallback() {
+			connectedCallback () {
 
-        console.dir(ShadyCSS);
+				console.dir(ShadyCSS);
 
-        ShadyCSS.prepareTemplate(template, 'extend-button-two');
+				ShadyCSS.prepareTemplate(template, 'extend-button-two');
 
-        ShadyCSS.styleElement(this);
+				ShadyCSS.styleElement(this);
 
-        if (!this.shadowRoot) {
+				if (!this.shadowRoot) {
 
-          const shadowRoot = this.attachShadow({ mode: 'open' });
+					const shadowRoot = this.attachShadow({mode: 'open'});
 
-          const temp = docU.importNode(template.content, true);
-          shadowRoot.appendChild(temp);
+					const temp = docU.importNode(template.content, true);
+					shadowRoot.appendChild(temp);
 
-          this.addMutationObserver(shadowRoot);
+					this.addMutationObserver(shadowRoot);
 
-          shadowRoot.querySelector('.input-text').setAttribute('id', 'whatever');
-          shadowRoot.querySelector('.input-text').setAttribute('id', 'hereitis');
+					shadowRoot.querySelector('.input-text').setAttribute('id', 'whatever');
+					shadowRoot.querySelector('.input-text').setAttribute('id', 'hereitis');
 
-          shadowRoot.querySelector('.input-text').addEventListener('keydown', (event) => {
+					shadowRoot.querySelector('.input-text').addEventListener('keydown', (event) => {
 
-            console.dir(event.target.value);
+						console.dir(event.target.value);
 
-          }, false);
+					}, false);
 
-        }
+				}
 
-      }
+			}
 
-      addMutationObserver(node) {
+			addMutationObserver (node) {
 
-        const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+				const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            const entry = {
-              mutation: mutation,
-              el: mutation.target,
-              value: mutation.target.textContent,
-              oldValue: mutation.oldValue,
-              attributeName: mutation.attributeName,
-              nextSibling: mutation.nextSibling
-            };
-            console.log('Recording mutation:', entry);
-          });
-        });
+				const observer = new MutationObserver((mutations) => {
+					mutations.forEach((mutation) => {
+						const entry = {
+							mutation: mutation,
+							el: mutation.target,
+							value: mutation.target.textContent,
+							oldValue: mutation.oldValue,
+							attributeName: mutation.attributeName,
+							nextSibling: mutation.nextSibling
+						};
+						console.log('Recording mutation:', entry);
+					});
+				});
 
-        observer.observe(node, {
-          childList: true,
-          attributes: true,
-          characterData: true,
-          subtree: true,
-          attributeOldValue: true,
-          characterDataOldValue: true,
-          attributeFilter: []
-        });
+				observer.observe(node, {
+					childList: true,
+					attributes: true,
+					characterData: true,
+					subtree: true,
+					attributeOldValue: true,
+					characterDataOldValue: true,
+					attributeFilter: []
+				});
 
-      }
+			}
 
-      attributeChangedCallback(attrName, oldValue, newValue) {
+			attributeChangedCallback (attrName, oldValue, newValue) {
 
-        if (Object.is(attrName, 'data-classname')) {
-          this.data_classname = oldValue;
-          console.log(this.data_classname);
-        }
+				if (Object.is(attrName, 'data-classname')) {
+					this.data_classname = oldValue;
+					console.log(this.data_classname);
+				}
 
-        if (Object.is(attrName, 'data-text')) {
-          this.data_display = oldValue;
-        }
+				if (Object.is(attrName, 'data-text')) {
+					this.data_display = oldValue;
+				}
 
-        this.amendDOM();
-      }
+				this.amendDOM();
+			}
 
-      get data_classname() {
-        return this._data_classname;
-      }
+			get data_classname () {
+				return this._data_classname;
+			}
 
-      set data_classname(value) {
-        this._data_classname = value;
-      }
+			set data_classname (value) {
+				this._data_classname = value;
+			}
 
-      get data_text() {
-        return this._data_text;
-      }
+			get data_text () {
+				return this._data_text;
+			}
 
-      set data_text(value) {
-        this._data_text = value;
-      }
+			set data_text (value) {
+				this._data_text = value;
+			}
 
-      amendDOM() {
-        this.classList.add(this.data_classname);
-      }
+			amendDOM () {
+				this.classList.add(this.data_classname);
+			}
 
-    }
+		}
 
-    window.customElements.define('extend-button-two', ExtendButtonTwo);
+		window.customElements.define('extend-button-two', ExtendButtonTwo);
 
-  })(document, window, ShadyCSS);
+	})(document, window, ShadyCSS);
 
 </script>
