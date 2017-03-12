@@ -17,9 +17,7 @@
     </ul>
     <!-- Hidden if no completed items are left ↓ -->
 
-<!--
     <button class="clear-completed">Clear completed</button>
--->
 
   </footer>
 
@@ -35,15 +33,15 @@
     class FooterComponent extends HTMLElement {
 
       static get observedAttributes() {
-        return ['total']
+        return ['total'];
       }
 
       constructor() {
         super();
+        this.total = this.getAttribute('total');
       }
 
       connectedCallback() {
-
         const temp = docU.importNode(template.content, true);
         this.appendChild(temp);
       }
