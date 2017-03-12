@@ -1,0 +1,139 @@
+/**
+Inline styles
+**/
+
+/**
+This selector will target any element on the page that has inline styles applied to it.
+As a general rule, inline styles should be avoided as they are difficult to override
+due to their increased level of specificity. Although inline
+styles may be necessary in some cases, this selector will help
+highlight them so a decision can be made on a case-by-case basis.
+
+With the problem elements selected, we can apply any style to
+make them more visibly obvious on the page, e.g. a big red border.
+ */
+
+*[style] {
+  border: 1px dashed red; /* Style to make the elements noticeable */
+}
+
+/**
+Faulty or Missing Link Targets
+ */
+
+/**
+These selectors will highlight any anchor elements that either do
+not have any href attribute at all, or have a meaningless one.
+ */
+
+a:not([href]),
+a[href="#"],
+a[href=""],
+a[href*="javascript:void(0)"] {
+  border-bottom: 1px dashed red;
+}
+
+/**
+Inaccessible Images
+ */
+
+/**
+As a blanket rule, all images should have an alt attribute.
+When this attribute is missing, most screen readers will read
+out the value of the src attribute instead which, of course,
+is not useful to the user and can in fact be confusing.
+ */
+
+img:not([alt]) {
+  border: 1px dashed red;
+}
+
+/**
+Missing Document Language
+ */
+
+/**
+An important attribute that should be present on all html elements
+is the language attribute. This attribute is a signal to screen
+readers what language the page is in, which can determine
+how the content of the page is read aloud.
+ */
+
+html:not([lang]),
+html[lang=""] {
+  border: 1px dashed red;
+}
+
+/**
+Incorrect Character Set
+**/
+
+
+/**
+This selector targets any meta character set tag that is not set to UTF-8.
+This tag tells the browser to use the UTF-8 form of character encoding,
+ which is presently the recommended form for HTML documents.
+ Having this tag is therefore required for valid HTML.
+
+Ideally, this tag should also be the first element after
+the opening <head> tag. We can check for this using the following selector -
+ */
+meta[charset="UTF-8"]:not(:first-child) ~ body {
+  /* something here */
+  opacity: 1;
+}
+
+/**
+Inaccessible Viewport Attributes
+ */
+
+/**
+This selector can be used to highlight unaccessible viewport meta attributes.
+It is generally advised that we avoid restricting the user's
+ability to manipulate the viewport by shrinking and enlarging it.
+So, using user-scalable=no, maximum-scale, or minimum-scale should never be used.
+ */
+
+meta[name="viewport"][content*="user-scalable=no"],
+meta[name="viewport"][content*="maximum-scale"],
+meta[name="viewport"][content*="minimum-scale"] {
+  /* Something here */
+}
+
+/**
+Unlabelled Form Elements
+ */
+
+/**
+Form elements are perhaps the most important elements when it comes to labelling.
+Although there are several ways to label a form element,
+the most common way is by having an ID on the element that is referenced by a label element.
+The above selector checks for form elements that do not have an ID,
+and label elements that are not explicitly linked to a form element using the for attribute.
+ */
+
+input:not([id]):after,
+select:not([id]):after,
+textarea:not([id]):after {
+  content: "NO ID ATTRIBUTE";
+}
+
+label:not([for]) {
+  outline: 1px dashed red;
+}
+
+/**
+Empty Interactive Elements
+ */
+
+/**
+Interactive elements like links or buttons are typically labelled by their content.
+Although it is possible to label these elements using other methods,
+such as an aria-label attribute, having them be empty is likely a sign of something wrong.
+This selector will highlight any links of buttons that have no HTML content inside them.
+ */
+
+button:empty,
+a:empty {
+  border: 1px dashed red;
+}

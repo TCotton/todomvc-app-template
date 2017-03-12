@@ -92,6 +92,7 @@ gulp.task('styles', () => {
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
     'app/styles/reset.css',
+    'app/styles/html_linter.css',
     'app/styles/css_mixins_apply.css',
     'app/styles/shared_button_styles.css',
     'app/styles/base.css',

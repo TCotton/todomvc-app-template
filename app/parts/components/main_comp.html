@@ -140,15 +140,14 @@
 
       insertListItems() {
 
-        let docfrag = document.createDocumentFragment();
-
+        const docfrag = document.createDocumentFragment();
         const todoUL = document.querySelector('.todo-list');
 
         this.removeULchildren(todoUL);
 
         for (let [key, value] of this.listblock.entries()) {
 
-          let listBlock = new ViewComponent(key, value.title, value.completed);
+          const listBlock = new ViewComponent(key, value.title, value.completed);
           listBlock.dataset.display = '1';
           docfrag.appendChild(listBlock);
 

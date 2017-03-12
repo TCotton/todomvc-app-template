@@ -35,7 +35,7 @@ class Store {
   }
 
   /**
-   * @description niavly sets data as a string on the main component which is acted upon in the observer
+   * @description niavely sets data as a string on the main component which is acted upon in the observer
    * @param data {Map}
    */
 
@@ -62,17 +62,17 @@ class Store {
 
   add() {
 
-    document.body.addEventListener('add', function (event) {
+    document.body.addEventListener('add', (event) => {
       this.mediator.todosData.set(Date.now(), { id: Date.now(), title: event.detail.title, completed: false });
       this.dataFlow(this.mediator.todosData);
       this.dataFlowTotal();
-    }.bind(this));
+    });
 
   }
 
   delete() {
 
-    document.body.addEventListener('delete', function (event) {
+    document.body.addEventListener('delete', (event) => {
 
       console.log(this.mediator.todosData.size);
 
@@ -84,38 +84,37 @@ class Store {
 
       console.log(this.mediator.todosData.size);
 
-    }.bind(this));
+    });
 
   }
 
   update() {
 
-    document.body.addEventListener('update', function (event) {
+    document.body.addEventListener('update', (event) => {
 
       console.log(this.mediator.todosData.size);
 
       const todoItem = this.mediator.todosData.get(event.detail.id);
       console.dir(todoItem.completed);
       console.dir(event.detail.completed);
-      console.log();
       this.mediator.todosData.set(todoItem.id, {
         id: todoItem.id,
         title: event.detail.title || todoItem.title,
         completed: event.detail.completed || todoItem.completed
       });
 
-      if(!event.detail.completed) {
+      if (!event.detail.completed) {
         this.dataFlow(this.mediator.todosData);
       }
 
       console.log(this.mediator.todosData.size);
 
-    }.bind(this), false);
+    }, false);
 
   }
 
 }
 
-window.onload = () => {
+window.addEventListener('WebComponentsReady', () => {
   APP.Store = new Store(APP);
-};
+});

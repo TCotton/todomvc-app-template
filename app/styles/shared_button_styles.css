@@ -1,9 +1,24 @@
-:host {
-  all: initial;
+/*
+.h2-element {
+  font-size: 30px!important;
+}
+p {
+  font-size: 20px;
 }
 button {
   background: white;
 }
+.button {
+  border: 1px solid blue;
+}
 .input-text {
   border: 1px solid blue;
 }
+
+.little-component {
+  border: 1px solid black;
+}
+
+input {
+  border: 1px solid red!important;
+}*/

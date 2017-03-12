@@ -15,7 +15,7 @@
 
         const shadowRoot = this.attachShadow({ mode: 'open' });
 
-        let template = '<style>button {background: red}</style>';
+        let template = '<style>button {background: red} h2 { font-size: 20px;}</style>';
         template += '<link rel="stylesheet" href="styles/shared_button_styles.css">';
         template += `<div><h2>This is the H2 tag</h2><slot><button>fallback content</button></slot></div>`;
         shadowRoot.innerHTML = template;
@@ -46,24 +46,40 @@
 
 <template id="expand-button-template">
 
-  <link rel="stylesheet" href="styles/shared_button_styles.css">
-
   <style>
     :host {
       border: 10px solid black;
       display: block;
     }
 
+    h2 {
+      font-size: 20px;
+    }
+
     button {
       background: red
+    }
+
+    button, input, p, h2 {
+      all: unset;
+    }
+
+    button, input, p, h2 {
+      font-size: 10px;
+      color: black;
+      display: block;
+    }
+    input {
+      border: 1px solid black;
     }
   </style>
 
   <div class="little-component">
-    <h2>This is the H2 tag</h2>
+    <h2 class="h2-element">This is the H2 tag</h2>
+    <p>Text here</p>
     <input type="text" class="input-text" placeholder="text here and here"/>
     <slot class="slotted" name="slot-button">
-      <button>fallback content</button>
+      <button class="button">fallback content</button>
     </slot>
     <slot class="slotted-data" name="slotted-data">
       <div id="text" contentEditable>Type something in here and look at the console.
@@ -89,12 +105,6 @@
       }
 
       connectedCallback() {
-
-        console.dir(ShadyCSS);
-
-        ShadyCSS.prepareTemplate(template, 'extend-button-two');
-
-        ShadyCSS.styleElement(this);
 
         if (!this.shadowRoot) {
 
