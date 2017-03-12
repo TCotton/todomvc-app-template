@@ -95,8 +95,7 @@ class Store {
       console.log(this.mediator.todosData.size);
 
       const todoItem = this.mediator.todosData.get(event.detail.id);
-      console.dir(todoItem.completed);
-      console.dir(event.detail.completed);
+
       this.mediator.todosData.set(todoItem.id, {
         id: todoItem.id,
         title: event.detail.title || todoItem.title,
